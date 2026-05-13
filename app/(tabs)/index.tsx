@@ -1,13 +1,21 @@
+import { router } from 'expo-router';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <View style={styles.topIcons}>
-        <Text style={styles.icon}>▮▮▮</Text>
-        <Text style={styles.icon}>⌂</Text>
+
+     <View style={styles.topIcons}>
+      <Text style={styles.icon}>▮▮▮</Text>
+      <Text style={styles.icon}>⌂</Text>
+      
+      <TouchableOpacity onPress={() => router.push('/settings')}>
         <Text style={styles.icon}>⚙</Text>
-      </View>
+      </TouchableOpacity>
+     </View>
+
+
+      
 
       <Text style={styles.title}>STEMM LAB APP</Text>
 
