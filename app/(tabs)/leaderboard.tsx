@@ -1,7 +1,36 @@
 import { router } from 'expo-router';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
+  function getScores() {
+    let data = [
+      {
+        "teamName" : "Template Team",
+        "score" : Infinity
+      }
+    ];
+    return data;
+  }
+  function displayRankings() {
+    let data = getScores();
+    let myDisplay = '';
+    for (var i=0; i<data.length&&i<5; i++) {
+      let highest = 0;
+      let highestIdx = 0;
+      for (var j=0; j<data.length; j++) {
+        if (data[j].score>highest) {
+          highest = data[j].score;
+          highestIdx = j;
+        }
+      }
+      myDisplay +=  <View style={styles.topIcons}>
+                      <Text style={styles.title}>{data[highestIdx].teamName}</Text>
+                      <Text style={styles.title}>{highest}</Text>
+                    </View>;
+      data.splice(highestIdx,1);
+    }
+    return myDisplay;
+  }
   return (
     <View style={styles.container}>
 
@@ -20,11 +49,7 @@ export default function HomeScreen() {
 
       <Text style={styles.title}>STEMM LAB APP</Text>
 
-      <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Name:" />
-        <TextInput style={styles.input} placeholder="Grade" />
-        <TextInput style={styles.input} placeholder="Team name" />
-      </View>
+      {displayRankings()}
 
       <TouchableOpacity style={styles.smallButton}>
         <Text style={styles.buttonText}>Add Team member</Text>
