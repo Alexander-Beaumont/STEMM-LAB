@@ -6,11 +6,10 @@ export default function HomeScreen() {
     <View style={styles.container}>
 
      <View style={styles.topIcons}>
-      <TouchableOpacity onPress={() => router.push('/leaderboard')}>
-        <Text style={styles.icon}>▮▮▮</Text>
+      <Text style={styles.icon}>▮▮▮</Text>
+      <TouchableOpacity onPress={() => router.push('/')}>
+        <Text style={styles.icon}>⌂</Text>
       </TouchableOpacity>
-      <Text style={styles.icon}>⌂</Text>
-      
       <TouchableOpacity onPress={() => router.push('/settings')}>
         <Text style={styles.icon}>⚙</Text>
       </TouchableOpacity>
