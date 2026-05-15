@@ -5,16 +5,46 @@ export default function HomeScreen() {
   function getScores() {
     let data = [
       {
-        "teamName" : "Template Team",
-        "score" : Infinity
+        "teamName" : "Template Team 1",
+        "score" : 10,
+        "key":0
+      },
+      {
+        "teamName" : "Template Team 2",
+        "score" : 150,
+        "key":1
+      },
+      {
+        "teamName" : "Template Team 3",
+        "score" : 100,
+        "key":2
+      },
+      {
+        "teamName" : "Template Team 4",
+        "score" : 40,
+        "key":3
+      },
+      {
+        "teamName" : "Template Team 5",
+        "score" : 79,
+        "key":4
+      },
+      {
+        "teamName" : "Template Team 6",
+        "score" : 92,
+        "key":5
       }
     ];
     return data;
   }
   function displayRankings() {
     let data = getScores();
-    let myDisplay = '';
-    for (var i=0; i<data.length&&i<5; i++) {
+    let myDisplay = [<View style={styles.leaderboardRow}>
+                      <Text style={styles.leaderboardHeader}>Team Name</Text>
+                      <Text style={styles.leaderboardHeader}>Score</Text>
+                    </View>];
+    let dataLength = data.length;
+    for (var i=0; i<dataLength&&i<5; i++) {
       let highest = 0;
       let highestIdx = 0;
       for (var j=0; j<data.length; j++) {
@@ -23,10 +53,10 @@ export default function HomeScreen() {
           highestIdx = j;
         }
       }
-      myDisplay +=  <View style={styles.topIcons}>
-                      <Text style={styles.title}>{data[highestIdx].teamName}</Text>
-                      <Text style={styles.title}>{highest}</Text>
-                    </View>;
+      myDisplay.push(<View style={styles.leaderboardRow}>
+                      <Text style={styles.leaderboardItem}>{data[highestIdx].teamName}</Text>
+                      <Text style={styles.leaderboardItem}>{highest}</Text>
+                    </View>);
       data.splice(highestIdx,1);
     }
     return myDisplay;
@@ -51,15 +81,6 @@ export default function HomeScreen() {
 
       {displayRankings()}
 
-      <TouchableOpacity style={styles.smallButton}>
-        <Text style={styles.buttonText}>Add Team member</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.continueButton}>
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
-
-      <View style={styles.homeIndicator} />
     </View>
   );
 }
@@ -84,7 +105,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 90,
+    marginBottom: 40,
+  },
+  leaderboardItem: {
+    textAlign: 'center',
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: 10,
+    borderRadius: 6,
+    width:'47%',
+    marginTop: 5,
+  },
+  leaderboardHeader: {
+    textAlign: 'center',
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: 10,
+    borderRadius: 0,
+    width:'50%',
+    marginTop: 5,
+  },
+  leaderboardRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 0,
+    marginBottom: 5,
   },
   form: {
     gap: 18,
