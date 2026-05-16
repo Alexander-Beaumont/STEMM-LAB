@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-    StyleSheet,
-    Switch,
-    Text,
-    TouchableOpacity,
-    View,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import './global.js';
 
 export default function SettingsScreen() {
   const [darkMode, setDarkMode] = useState(false);
