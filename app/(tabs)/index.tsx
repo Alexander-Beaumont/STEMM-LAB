@@ -1,51 +1,80 @@
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import "../global.js";
 
 export default function HomeScreen() {
+  
+  const [darkMode, setDarkMode] = useState(false);
+  if (darkMode!=global.darkmodeEnabled) {
+    setDarkMode(global.darkmodeEnabled);
+  }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,
+      {
+          backgroundColor: darkMode ? '#111' : '#fff',
+      }]}>
 
      <View style={styles.topIcons}>
       <TouchableOpacity onPress={() => router.push('/leaderboard')}>
-        <Text style={styles.icon}>▮▮▮</Text>
+        <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>▮▮▮</Text>
       </TouchableOpacity>
-      <Text style={styles.icon}>⌂</Text>
+      <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⌂</Text>
       
       <TouchableOpacity onPress={() => router.push('/settings')}>
-        <Text style={styles.icon}>⚙</Text>
+        <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⚙</Text>
       </TouchableOpacity>
      </View>
 
 
       
 
-      <Text style={styles.title}>STEMM LAB APP</Text>
+      <Text style={[styles.title,
+        {color: darkMode ? '#fff' : '#111'}
+      ]}>STEMM LAB APP</Text>
 
       <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Name:" />
-        <TextInput style={styles.input} placeholder="Grade" />
-        <TextInput style={styles.input} placeholder="Team name" />
+        <TextInput style={[styles.input,
+          {backgroundColor: darkMode ? '#111' : '#fff',
+          color: darkMode ? '#fff' : '#777',}
+        ]}
+          placeholderTextColor={darkMode ? '#fff' : '#777'}
+          placeholder="Name:" />
+        <TextInput style={[styles.input,
+          {backgroundColor: darkMode ? '#111' : '#fff',
+          color: darkMode ? '#fff' : '#777'}
+        ]} 
+          placeholderTextColor={darkMode ? '#fff' : '#777'}
+          placeholder="Grade" />
+        <TextInput style={[styles.input,
+          {backgroundColor: darkMode ? '#111' : '#fff',
+          color: darkMode ? '#fff' : '#777'}
+        ]} 
+          placeholderTextColor={darkMode ? '#fff' : '#777'}
+          placeholder="Team name" />
       </View>
 
-      <TouchableOpacity style={styles.smallButton}>
-        <Text style={styles.buttonText}>Add Team member</Text>
+      <TouchableOpacity style={[styles.smallButton,
+      {backgroundColor: darkMode ? '#111' : '#fff'}]}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Add Team member</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.continueButton}>
-        <Text style={styles.buttonText}>Continue</Text>
+      <TouchableOpacity style={[styles.continueButton,
+      {backgroundColor: darkMode ? '#111' : '#fff'}]}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Continue</Text>
       </TouchableOpacity>
 
-      <View style={styles.homeIndicator} />
+      <View style={[styles.homeIndicator,{backgroundColor: darkMode ? '#fff' : '#111'}]} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 28,
     paddingTop: 55,
-    backgroundColor: '#fff',
   },
   topIcons: {
     flexDirection: 'row',
@@ -75,27 +104,23 @@ const styles = StyleSheet.create({
   },
   smallButton: {
     alignSelf: 'center',
-    backgroundColor: '#222',
     paddingVertical: 12,
     paddingHorizontal: 18,
     borderRadius: 6,
     marginTop: 100,
   },
   continueButton: {
-    backgroundColor: '#000',
     paddingVertical: 14,
     borderRadius: 6,
     marginTop: 90,
   },
   buttonText: {
-    color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
   },
   homeIndicator: {
     width: 120,
     height: 5,
-    backgroundColor: '#000',
     borderRadius: 3,
     alignSelf: 'center',
     marginTop: 30,

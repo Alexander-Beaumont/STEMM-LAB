@@ -1,7 +1,12 @@
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
+  const [darkMode, setDarkMode] = useState(false);
+    if (darkMode!=global.darkmodeEnabled) {
+      setDarkMode(global.darkmodeEnabled);
+    }
   function getScores() {
     let data = [
       {
@@ -39,9 +44,13 @@ export default function HomeScreen() {
   }
   function displayRankings() {
     let data = getScores();
+
+    let darkmodeCSS = {backgroundColor: darkMode ? '#f4f4f4' : '#111',
+          color: darkMode ? '#111' : '#fff'}
+
     let myDisplay = [<View style={styles.leaderboardRow}>
-                      <Text style={styles.leaderboardHeader}>Team Name</Text>
-                      <Text style={styles.leaderboardHeader}>Score</Text>
+                      <Text style={[styles.leaderboardHeader,darkmodeCSS]}>Team Name</Text>
+                      <Text style={[styles.leaderboardHeader,darkmodeCSS]}>Score</Text>
                     </View>];
     let dataLength = data.length;
     for (var i=0; i<dataLength&&i<5; i++) {
@@ -54,30 +63,36 @@ export default function HomeScreen() {
         }
       }
       myDisplay.push(<View style={styles.leaderboardRow}>
-                      <Text style={styles.leaderboardItem}>{data[highestIdx].teamName}</Text>
-                      <Text style={styles.leaderboardItem}>{highest}</Text>
+                      <Text style={[styles.leaderboardItem,darkmodeCSS]}>{data[highestIdx].teamName}</Text>
+                      <Text style={[styles.leaderboardItem,darkmodeCSS]}>{highest}</Text>
                     </View>);
       data.splice(highestIdx,1);
     }
     return myDisplay;
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,
+      {
+          backgroundColor: darkMode ? '#111' : '#fff',
+      }]}>
 
      <View style={styles.topIcons}>
-      <Text style={styles.icon}>▮▮▮</Text>
-      <TouchableOpacity onPress={() => router.push('/')}>
-        <Text style={styles.icon}>⌂</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push('/settings')}>
-        <Text style={styles.icon}>⚙</Text>
-      </TouchableOpacity>
-     </View>
+        <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>▮▮▮</Text>
+                    
+        <TouchableOpacity onPress={() => router.push('/')}>
+        <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⌂</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/settings')}>
+          <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⚙</Text>
+        </TouchableOpacity>
+      </View>
 
 
       
 
-      <Text style={styles.title}>STEMM LAB APP</Text>
+      <Text style={[styles.title,
+        {color: darkMode ? '#fff' : '#111'}
+      ]}>STEMM LAB APP</Text>
 
       {displayRankings()}
 

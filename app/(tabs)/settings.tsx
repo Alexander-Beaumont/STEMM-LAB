@@ -1,3 +1,4 @@
+
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -5,12 +6,24 @@ import {
   Switch,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import './global.js';
+import "../global.js";
+
+declare global {
+    var darkmodeEnabled: boolean;
+}
 
 export default function SettingsScreen() {
+  
   const [darkMode, setDarkMode] = useState(false);
+  if (darkMode!=global.darkmodeEnabled) {
+    setDarkMode(global.darkmodeEnabled);
+  }
+  function changeDarkMode() {
+    setDarkMode(!darkMode)
+    global.darkmodeEnabled = !darkMode
+  }
 
   return (
     <View
@@ -55,7 +68,7 @@ export default function SettingsScreen() {
       <View style={styles.settingRow}>
         <TouchableOpacity
           style={styles.toggleButton}
-          onPress={() => setDarkMode(!darkMode)}
+          onPress={() => changeDarkMode}
         >
           <Text style={styles.buttonText}>
             Toggle Dark Mode
@@ -64,7 +77,7 @@ export default function SettingsScreen() {
 
         <Switch
           value={darkMode}
-          onValueChange={setDarkMode}
+          onValueChange={changeDarkMode}
         />
       </View>
 
