@@ -85,20 +85,10 @@ export default function SettingsScreen() {
       </View>
 
       <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
+        style={[styles.backButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
+        onPress={() => router.back()}>
+        <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Back</Text>
       </TouchableOpacity>
-
-      <View
-        style={[
-          styles.homeIndicator,
-          {
-            backgroundColor: darkMode ? '#fff' : '#000',
-          },
-        ]}
-      />
     </View>
   );
 }
@@ -147,16 +137,20 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  backButton: {
-    backgroundColor: '#000',
-    paddingVertical: 14,
-    borderRadius: 6,
-  },
-
   backButtonText: {
     color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
+  },
+  
+  backButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    width: "100%",
+    borderRadius: 6,
+    bottom: 70,
+    alignSelf: 'center',
+    position:"absolute",
   },
 
   homeIndicator: {

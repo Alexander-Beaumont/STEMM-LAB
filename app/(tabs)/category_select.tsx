@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import "../global.js";
 
-export default function HomeScreen() {
+export default function CategoryScreen() {
   
   const [darkMode, setDarkMode] = useState(false);
   if (darkMode!=global.darkmodeEnabled) {
@@ -19,7 +19,9 @@ export default function HomeScreen() {
       <TouchableOpacity onPress={() => router.push('/leaderboard')}>
         <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>▮▮▮</Text>
       </TouchableOpacity>
-      <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⌂</Text>
+      <TouchableOpacity onPress={() => router.push('/')}>
+        <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⌂</Text>
+      </TouchableOpacity>
       
       <TouchableOpacity onPress={() => router.push('/settings')}>
         <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>⚙</Text>
@@ -32,36 +34,23 @@ export default function HomeScreen() {
       <Text style={[styles.title,
         {color: darkMode ? '#fff' : '#111'}
       ]}>STEMM LAB APP</Text>
+      <Text style={[styles.title,
+        {color: darkMode ? '#fff' : '#111'}
+      ]}>Select Activity Category</Text>
 
-      <View style={styles.form}>
-        <TextInput style={[styles.input,
-          {backgroundColor: darkMode ? '#111' : '#fff',
-          color: darkMode ? '#fff' : '#777',}
-        ]}
-          placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Name:" />
-        <TextInput style={[styles.input,
-          {backgroundColor: darkMode ? '#111' : '#fff',
-          color: darkMode ? '#fff' : '#777'}
-        ]} 
-          placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Grade" />
-        <TextInput style={[styles.input,
-          {backgroundColor: darkMode ? '#111' : '#fff',
-          color: darkMode ? '#fff' : '#777'}
-        ]} 
-          placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Team name" />
-      </View>
-
-      <TouchableOpacity style={[styles.smallButton,
-      {backgroundColor: darkMode ? '#111' : '#fff'}]}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Add Team member</Text>
+      <TouchableOpacity style={[styles.optionButton,
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/physics_select')}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Physics and Engineering</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.optionButton,
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/health_select')}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Health and Medical Science</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.continueButton,
-      {backgroundColor: darkMode ? '#fff' : '#111'}]}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]} onPress={() => router.push('/category_select')}>Continue</Text>
+      <TouchableOpacity
+        style={[styles.backButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
+        onPress={() => router.back()}>
+        <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Back</Text>
       </TouchableOpacity>
     </View>
   );
@@ -87,7 +76,21 @@ export default function HomeScreen() {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 90,
+    marginBottom: 50,
+  },
+  backButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  backButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    width: "100%",
+    borderRadius: 6,
+    bottom: 70,
+    alignSelf: 'center',
+    position:"absolute",
   },
   form: {
     gap: 18,
@@ -107,14 +110,10 @@ export default function HomeScreen() {
     borderRadius: 6,
     marginTop: 100,
   },
-  continueButton: {
+  optionButton:{
     paddingVertical: 14,
     borderRadius: 6,
-    marginTop: 90,
-    alignSelf: 'center',
-    width: "100%",
-    bottom: 70,
-    position:"absolute",
+    marginTop: 10,
   },
   buttonText: {
     textAlign: 'center',
@@ -125,6 +124,7 @@ export default function HomeScreen() {
     height: 5,
     borderRadius: 3,
     alignSelf: 'center',
-    marginTop: 30,
+    bottom:2,
+    position: 'absolute',
   },
 });
