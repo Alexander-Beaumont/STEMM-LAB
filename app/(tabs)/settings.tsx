@@ -35,6 +35,9 @@ export default function SettingsScreen() {
       ]}
     >
       <View style={styles.topIcons}>
+        <TouchableOpacity onPress={() => router.push('/leaderboard')}>
+          <Text style={[styles.icon,{color: darkMode ? '#fff' : '#111'}]}>▮▮▮</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/' as any)}>
           <Text
             style={[
