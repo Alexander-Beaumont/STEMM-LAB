@@ -1,6 +1,6 @@
 
 import { router } from 'expo-router';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -39,7 +39,7 @@ export default class Screen {
                 paddingTop: 55,
             },
             text: {
-                textAlign: 'center',
+                textAlign: 'left',
                 fontSize: 16,
                 fontWeight: '400',
             },
@@ -56,7 +56,7 @@ export default class Screen {
                 textAlign: 'center',
                 fontSize: 20,
                 fontWeight: '700',
-                marginBottom: 50,
+                marginBottom: 10,
             },
             backButtonText: {
                 color: '#fff',
@@ -108,18 +108,10 @@ export default class Screen {
                 textAlign: 'center',
                 fontWeight: '600',
             },
-            homeIndicator: {
-                width: 120,
-                height: 5,
-                borderRadius: 3,
-                alignSelf: 'center',
-                bottom:2,
-                position: 'absolute',
-            },
         });
         let compiledDecorators = [];
         for (let i=0;i<this.decorators.length;i++) {
-            compiledDecorators.push(this.decorators[i].getCode());
+            compiledDecorators.push(React.cloneElement(this.decorators[i].getCode(), { key:compiledDecorators.length}));
         }
         
         return (
@@ -155,9 +147,6 @@ export default class Screen {
               ]}>{this.textContent}</Text>
 
               {compiledDecorators}
-              <Text style={[styles.text,
-                {color: darkMode ? '#fff' : '#111'}
-              ]}>fuck</Text>
 
 
               <TouchableOpacity

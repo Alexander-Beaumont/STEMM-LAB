@@ -1,1 +1,2 @@
-global.darkmodeEnabled = false;
+global.darkmodeEnabled = true;
+global.uri = ""
