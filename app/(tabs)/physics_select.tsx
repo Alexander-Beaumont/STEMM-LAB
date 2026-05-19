@@ -39,7 +39,7 @@ export default function CategoryScreen() {
       ]}>Select Physics Activity</Text>
 
       <TouchableOpacity style={[styles.optionButton,
-      {backgroundColor: darkMode ? '#444' : '#ddd'}]}>
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/activity1')}>
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Parachute Drop</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.optionButton,
