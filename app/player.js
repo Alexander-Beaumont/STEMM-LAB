@@ -4,7 +4,7 @@ import Decorator from './decorator';
 
 export default class PlayerDecorator extends Decorator {
     getCode(){
-        let msg = 'https://ia800506.us.archive.org/5/items/Trees_201811/Trees.mp4';
+        let msg = global.videos[global.videos.length-1].uri;
         const player = useVideoPlayer(Array.isArray(msg) ? msg[0] : msg, player => {
             player.loop = true;
             player.play();
@@ -17,7 +17,7 @@ export default class PlayerDecorator extends Decorator {
             },
             video: {
                 width: "100%",
-                height: 200,
+                height: 350,
             },
             controlsContainer: {
                 padding: 10,

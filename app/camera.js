@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, Button, StyleSheet, Platform } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
-import "../global.js"
+import "./global.js"
 
 
 export default class Camera {
@@ -50,7 +50,7 @@ export default class Camera {
                 console.log(myRecording)
                 return
             }
-            global.uri = myRecording;
+            global.video.push(myRecording)
             router.push("/activity1.6")
             }
         };

@@ -1,2 +1,2 @@
 global.darkmodeEnabled = true;
-global.uri = ""
+global.videos = []
