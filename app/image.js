@@ -10,7 +10,7 @@ export default class ImageDecorator extends Decorator {
     }
     getCode(){
         return (
-            <Image source={this.placeholderImage} style={{width:"100%",height:"250"}}/>
+            <Image source={this.placeholderImage} style={{width:"100%",height:"150"}}/>
         )
     }; 
 }
