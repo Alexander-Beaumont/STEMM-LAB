@@ -33,3 +33,6 @@ global.activity1Reflection = '';
 global.activity2Reflection = '';
 global.activity3Reflection = '';
 global.activity4Reflection = '';
+
+
+global.activity5Complete = [false,false,false];
