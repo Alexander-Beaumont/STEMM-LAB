@@ -140,7 +140,7 @@ export default function Activity1() {
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 50,
+    marginBottom: 10,
   },
   backButtonText: {
     color: '#fff',

@@ -5,7 +5,6 @@ import Screen from '../screen.js';
 
 export default function Activity1() {
     let activity = new Camera();
-    activity.setLink('/activity1.6')
     let currentActivity = global.activity1Data[global.activity1DataIndex] as any;
     activity.setSaveVar(currentActivity.video)
 

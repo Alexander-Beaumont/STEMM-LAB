@@ -10,9 +10,6 @@ export default class Camera {
         this.goTo = '/';
         this.saveVar = global.videos;
     }
-    setLink(address) {
-        this.goTo = address;
-    }
     setSaveVar(save) {
         this.saveVar = save;
     }
@@ -72,7 +69,7 @@ export default class Camera {
                 return
             }
             this.saveVar[0] = myRecording
-            router.push(this.goTo)
+            router.back()
             }
         };
         
