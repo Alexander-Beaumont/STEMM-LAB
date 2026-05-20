@@ -47,11 +47,11 @@ export default function CategoryScreen() {
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Sound Pollution Hunter</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.optionButton,
-      {backgroundColor: darkMode ? '#444' : '#ddd'}]}>
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/activity3.1')}>
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Hand Fan Challenge</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.optionButton,
-      {backgroundColor: darkMode ? '#444' : '#ddd'}]}>
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/activity4.1')}>
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Earthquake-Resistant Structure</Text>
       </TouchableOpacity>
 

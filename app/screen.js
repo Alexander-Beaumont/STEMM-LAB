@@ -14,12 +14,16 @@ export default class Screen {
         this.textContent = "";
         this.buttonLink = "/";
         this.decorators = [];
+        this.hasContinue = true;
     }
     setTitle(title) {
         this.title = title;
     }
     setText(text) {
         this.textContent = text;
+    }
+    removeContinue() {
+        this.hasContinue = false;
     }
     setButtonLink(buttonLink) {
         this.buttonLink = buttonLink;
@@ -28,10 +32,7 @@ export default class Screen {
         this.decorators.push(decorator);
     }
     getScreenCode() {
-    const [darkMode, setDarkMode] = useState(false);
-    if (darkMode!=global.darkmodeEnabled) {
-        setDarkMode(global.darkmodeEnabled);
-    }
+    const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
     const styles = StyleSheet.create({
             container: {
                 flex: 1,
@@ -110,9 +111,24 @@ export default class Screen {
             },
         });
         let compiledDecorators = [];
+        let continueCode;
+        if (this.hasContinue) {
+            continueCode = (<TouchableOpacity
+                style={[styles.continueButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
+                onPress={() => router.push(this.buttonLink)}>
+                <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Continue</Text>
+              </TouchableOpacity>)
+        }
+        let textCode;
+        if (this.textContent!="") {
+            textCode = (<Text style={[styles.text,
+                {color: darkMode ? '#fff' : '#111'}
+              ]}>{this.textContent}</Text>)
+        }
         for (let i=0;i<this.decorators.length;i++) {
             compiledDecorators.push(React.cloneElement(this.decorators[i].getCode(), { key:compiledDecorators.length}));
         }
+
         
         return (
             <View style={[styles.container,
@@ -142,18 +158,12 @@ export default class Screen {
               <Text style={[styles.title,
                 {color: darkMode ? '#fff' : '#111'}
               ]}>{this.title}</Text>
-              <Text style={[styles.text,
-                {color: darkMode ? '#fff' : '#111'}
-              ]}>{this.textContent}</Text>
+              {textCode}
 
               {compiledDecorators}
 
 
-              <TouchableOpacity
-                style={[styles.continueButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
-                onPress={() => router.push(this.buttonLink)}>
-                <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Continue</Text>
-              </TouchableOpacity>
+              {continueCode}
               <TouchableOpacity
                 style={[styles.backButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
                 onPress={() => router.back()}>

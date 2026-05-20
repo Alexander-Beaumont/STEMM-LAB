@@ -3,33 +3,29 @@ import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import "../global.js";
 declare global {
-    var activity1Complete: boolean[];
-    var activity1DataIndex: number;
-    var activity1Data: Object[];
-    var activity1Reflection: String;
+    var activity4Complete: boolean[];
+    var activity4DataIndex: number;
+    var activity4Data: Object[];
+    var activity4Reflection: String;
 }
 
 
-export default function Activity1() {
+export default function Activity4() {
   
-  const [darkMode, setDarkMode] = useState(false);
-  const [controlComplete, setControlComplete] = useState(global.activity1Complete[0]);
-  const [attempt1Complete, setAttempt1Complete] = useState(global.activity1Complete[1]);
-  const [attempt2Complete, setAttempt2Complete] = useState(global.activity1Complete[2]);
-  const [attempt3Complete, setAttempt3Complete] = useState(global.activity1Complete[3]);
-  if (darkMode!=global.darkmodeEnabled) {
-    setDarkMode(global.darkmodeEnabled);
-  }
+  const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
+  const [attempt1Complete, setAttempt1Complete] = useState(global.activity4Complete[0]);
+  const [attempt2Complete, setAttempt2Complete] = useState(global.activity4Complete[1]);
+  const [attempt3Complete, setAttempt3Complete] = useState(global.activity4Complete[2]);
 
   function goToData(index: number) {
-    global.activity1DataIndex = index;
-    router.push('/activity1.6')
+    global.activity4DataIndex = index;
+    router.push('/activity4.6')
   }
   let continueCode;
-  if (controlComplete&&attempt1Complete&&attempt2Complete&&attempt3Complete) {
+  if (attempt1Complete&&attempt2Complete&&attempt3Complete) {
     continueCode = (<TouchableOpacity
                     style={[styles.continueButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
-                    onPress={() => router.push("/activity1.9")}>
+                    onPress={() => router.push("/activity4.7")}>
                     <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Continue</Text>
                   </TouchableOpacity>)
   }
@@ -60,22 +56,11 @@ export default function Activity1() {
       ]}>STEMM LAB APP</Text>
       <Text style={[styles.title,
         {color: darkMode ? '#fff' : '#111'}
-      ]}>Parachute Drop</Text>
-    
+      ]}>Earthquake Resistant Structure</Text>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(0)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Control</Text>
-        </TouchableOpacity>
-        <View style={[styles.statusbox,
-        {backgroundColor: controlComplete ? '#0d5806' : '#580606'}]}>
-            <Text style={[styles.buttonText,{color: '#fff'}]}>{controlComplete ? 'Complete' : "Incomplete"}</Text>
-        </View>
-      </View>
-      <View style={styles.box}>
-        <TouchableOpacity style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(1)}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Attempt 1</Text>
+        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(0)}>
+            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Design 1</Text>
         </TouchableOpacity>
         <View style={[styles.statusbox,
         {backgroundColor: attempt1Complete ? '#0d5806' : '#580606'}]}>
@@ -84,8 +69,8 @@ export default function Activity1() {
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(2)}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Attempt 2</Text>
+        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(1)}>
+            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Design 2</Text>
         </TouchableOpacity>
         <View style={[styles.statusbox,
         {backgroundColor: attempt2Complete ? '#0d5806' : '#580606'}]}>
@@ -94,8 +79,8 @@ export default function Activity1() {
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(3)}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Attempt 3</Text>
+        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(2)}>
+            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Design 3</Text>
         </TouchableOpacity>
         <View style={[styles.statusbox,
         {backgroundColor: attempt3Complete ? '#0d5806' : '#580606'}]}>

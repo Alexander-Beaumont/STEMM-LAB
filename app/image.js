@@ -1,4 +1,4 @@
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import Decorator from './decorator';
 
 
@@ -10,7 +10,7 @@ export default class ImageDecorator extends Decorator {
     }
     getCode(){
         return (
-            <Image source={this.placeholderImage} style={{width:"100%",height:"250"}}/>
+            <Image source={this.placeholderImage} style={{width:"100%",height:"250",resizeMode: 'stretch',}}/>
         )
     }; 
 }

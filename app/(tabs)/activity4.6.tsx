@@ -3,27 +3,23 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
 
-export default function Activity1() {
+export default function Activity4() {
   
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
-  let currentActivity = global.activity1Data[global.activity1DataIndex] as any;
-  const [time, setTime] = useState(currentActivity.time);
-  const [mass, setMass] = useState(currentActivity.mass);
-  const [height, setHeight] = useState(currentActivity.height);
-  const [accuracy, setAccuracy] = useState(currentActivity.accuracy);
+  let currentActivity = global.activity4Data[global.activity4DataIndex] as any;
+  const [vibration, setVibration] = useState(currentActivity.vibration);
+  const [outcome, setOutcome] = useState(currentActivity.outcome);
 
   function inputData() {
-    currentActivity.time = time;
-    currentActivity.mass = mass;
-    currentActivity.height = height;
-    currentActivity.accuracy = accuracy;
-    if (time!=""&&mass!=""&&height!=""&&accuracy!=""&&time!=null&&mass!=null&&height!=null&&accuracy!=null) {
-        global.activity1Complete[global.activity1DataIndex] = true;
+    currentActivity.vibration = vibration;
+    currentActivity.outcome = outcome;
+    if (vibration!=""&&outcome!=""&&vibration!=null&&outcome!=null) {
+        global.activity4Complete[global.activity4DataIndex] = true;
     }
     else {
-        global.activity1Complete[global.activity1DataIndex] = false;
+        global.activity4Complete[global.activity4DataIndex] = false;
     }
-    router.push("/activity1.5")
+    router.push("/activity4.5")
   }
 
   return (
@@ -53,67 +49,33 @@ export default function Activity1() {
         ]}>STEMM LAB APP</Text>
         <Text style={[styles.title,
             {color: darkMode ? '#fff' : '#111'}
-        ]}>Parachute Drop</Text>
-        <View style={styles.boxAround}>
-            <TouchableOpacity
-                style={[styles.smallButton,{backgroundColor: '#3eb8f1',}]}
-                onPress={()=>{router.push("/activity1.7")}}>
-                <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Record Video</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.smallButton,{backgroundColor: '#3eb8f1',}]}
-                onPress={()=>{router.push("/activity1.8")}}>
-                <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>View Video</Text>
-            </TouchableOpacity>
-        </View>
+        ]}>Earthquake Resistant Structure</Text>
+        
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Time spent falling</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Measured Vibration</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',
                   color: darkMode ? '#444' : '#fff',}
                 ]}
                   placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Time (s)" value={time} onChangeText={(e) => setTime(e)} />
+                  placeholder="Vibration" value={vibration} onChangeText={(e) => setVibration(e)} />
       </View>
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Mass</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Outcome</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',
                   color: darkMode ? '#444' : '#fff',}
                 ]}
                   placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Mass (kg)" value={mass} onChangeText={(e) => setMass(e)}/>
+                  placeholder="Outcome" value={outcome} onChangeText={(e) => setOutcome(e)}/>
       </View>
-      <View style={styles.box}>
-        <View style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color:darkMode ? '#000' : '#fff'}]}>Height</Text>
-        </View>
-        <TextInput style={[styles.input,
-                  {backgroundColor: darkMode ?  '#bbb' : '#666',
-                  color: darkMode ? '#444' : '#fff',}
-                ]}
-                  placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Height (m)" value={height} onChangeText={(e) => setHeight(e)}/>
-      </View>
-      <View style={styles.box}>
-        <View style={[styles.optionButton,
-        {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Accuracy</Text>
-        </View>
-        <TextInput style={[styles.input,
-                  {backgroundColor: darkMode ?  '#bbb' : '#666',
-                  color: darkMode ? '#444' : '#fff',}
-                ]}
-                  placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Accuracy (cm)" value={accuracy} onChangeText={(e) => setAccuracy(e)} />
-      </View>
+      
         <TouchableOpacity
             style={[styles.continueButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
             onPress={inputData}>
