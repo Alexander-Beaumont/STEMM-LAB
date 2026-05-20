@@ -1,7 +1,64 @@
+import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
+import { Accelerometer } from 'expo-sensors';
 
 export default function Activity56() {
+  const [data, setData] = useState({ x: 0, y: 0, z: 0 });
+  const [subscription, setSubscription] = useState<any>(null);
+  const [measuring, setMeasuring] = useState(false);
+
+  function calculateMovement() {
+    const { x, y, z } = data;
+    return Math.sqrt(x * x + y * y + z * z);
+  }
+
+  function classifyMovement(value: number) {
+    if (!measuring) return 'Not Measuring';
+    if (value < 1.1) return 'Smooth';
+    if (value < 1.5) return 'Moderate';
+    return 'Shaky';
+  }
+
+  function getFeedback(level: string) {
+    if (level === 'Smooth') {
+      return 'Good control. Your movement is slow and stable.';
+    }
+    if (level === 'Moderate') {
+      return 'Moderate movement detected. Try to move more smoothly.';
+    }
+    if (level === 'Shaky') {
+      return 'High vibration detected. Slow down and control the movement.';
+    }
+    return 'Press Start to begin measuring your movement.';
+  }
+
+  function startMeasuring() {
+    if (subscription) return;
+
+    Accelerometer.setUpdateInterval(100);
+
+    const sub = Accelerometer.addListener((accelerometerData) => {
+      setData(accelerometerData);
+    });
+
+    setSubscription(sub);
+    setMeasuring(true);
+  }
+
+  function stopMeasuring() {
+    if (subscription) {
+      subscription.remove();
+      setSubscription(null);
+    }
+
+    setMeasuring(false);
+  }
+
+  const movementValue = calculateMovement();
+  const movementLevel = classifyMovement(movementValue);
+  const feedback = getFeedback(movementLevel);
+
   return (
     <View style={styles.container}>
       <View style={styles.topIcons}>
@@ -28,33 +85,31 @@ export default function Activity56() {
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Movement Status</Text>
-        <Text style={styles.status}>Not Measuring</Text>
+        <Text style={styles.status}>{movementLevel}</Text>
       </View>
 
       <View style={styles.dataRow}>
         <View style={styles.dataBox}>
           <Text style={styles.dataLabel}>Smoothness</Text>
-          <Text style={styles.dataValue}>--</Text>
+          <Text style={styles.dataValue}>{movementLevel}</Text>
         </View>
 
         <View style={styles.dataBox}>
           <Text style={styles.dataLabel}>Intensity</Text>
-          <Text style={styles.dataValue}>--</Text>
+          <Text style={styles.dataValue}>{movementValue.toFixed(2)}</Text>
         </View>
       </View>
 
       <View style={styles.feedbackBox}>
         <Text style={styles.feedbackTitle}>Feedback</Text>
-        <Text style={styles.feedbackText}>
-          Press Start to begin measuring your movement. Try to move slowly and smoothly.
-        </Text>
+        <Text style={styles.feedbackText}>{feedback}</Text>
       </View>
 
-      <TouchableOpacity style={styles.startButton}>
+      <TouchableOpacity style={styles.startButton} onPress={startMeasuring}>
         <Text style={styles.buttonText}>Start Measuring</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.stopButton}>
+      <TouchableOpacity style={styles.stopButton} onPress={stopMeasuring}>
         <Text style={styles.buttonText}>Stop Measuring</Text>
       </TouchableOpacity>
 
