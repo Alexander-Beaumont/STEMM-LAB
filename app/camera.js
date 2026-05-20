@@ -1,12 +1,23 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, Button, StyleSheet, Platform } from 'react-native';
+import { View, Text, Button, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 import "./global.js"
 
 
 export default class Camera {
+    constructor() {
+        this.goTo = '/';
+        this.saveVar = global.videos;
+    }
+    setLink(address) {
+        this.goTo = address;
+    }
+    setSaveVar(save) {
+        this.saveVar = save;
+    }
     getCode() { 
+        const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
         const [hasPermission, requestPermission] = useCameraPermissions();
         const [cameraReady, setCameraReady] = useState(false);
         const cameraRef = useRef(null);
@@ -14,17 +25,27 @@ export default class Camera {
         const [recording, setRecording] = useState(false);
         const styles = StyleSheet.create({
             container: {
-                flex: 1,
                 paddingTop: Platform.OS === 'android' ? 40 : 80,
                 paddingBottom: Platform.OS === 'android' ? 40 : 80,
                 justifyContent: 'center',
                 backgroundColor: '#000',
             },
             camera: {
-                flex: 1,
+                height:"100%",
             },
-            preview: {
-                flex: 1,
+            buttons: {
+                backgroundColor: '#3eb8f1',
+                paddingVertical: 14,
+                width: "100%",
+                borderRadius: 6,
+                bottom: 50,
+                alignSelf: 'center',
+                position:"absolute",
+            },
+            backButtonText: {
+                color: '#fff',
+                textAlign: 'center',
+                fontWeight: '600',
             },
             });
 
@@ -50,8 +71,8 @@ export default class Camera {
                 console.log(myRecording)
                 return
             }
-            global.video.push(myRecording)
-            router.push("/activity1.6")
+            this.saveVar[0] = myRecording
+            router.push(this.goTo)
             }
         };
         
@@ -74,13 +95,13 @@ export default class Camera {
                 responsiveOrientationWhenOrientationLocked={true}
                 />
             {recording ? (
-                <>
-                <Button title="Stop Recording" onPress={stopRecord} />
-                </>
+                <TouchableOpacity style={styles.buttons} onPress={stopRecord} >
+                    <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Stop Recording</Text>
+                </TouchableOpacity>
             ) : (
-                <>
-                <Button title="record" onPress={record} disabled={!cameraReady} />
-                </>
+                <TouchableOpacity style={styles.buttons} onPress={record} disabled={!cameraReady} >
+                    <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Record Video</Text>
+                </TouchableOpacity>
             )}
             </View>
         );
