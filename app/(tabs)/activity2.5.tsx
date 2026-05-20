@@ -16,7 +16,7 @@ export default function Activity25() {
     getCode() {
       return (
         <SoundMeter
-          onSoundChange={(data) => {
+          onSoundChange={(data: { approxDb: number; soundLevel: string }) => {
             console.log('Approx dB:', data.approxDb);
             console.log('Sound Level:', data.soundLevel);
           }}
