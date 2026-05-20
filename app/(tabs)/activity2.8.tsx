@@ -1,12 +1,13 @@
 
 import Screen from '../screen.js';
+import Reflection from '../reflection.js';
   
 
 export default function Activity2() {
     let activity = new Screen();
     activity.setTitle("Sound Polution")
-    activity.setText("For this activity you will measure and compare sound levels in different classroom activities")
-    activity.setButtonLink('/activity2.2')
+    activity.removeContinue()
+    activity.addDecorator(new Reflection(global.activity2Reflection))
 
     return (
         activity.getScreenCode()
