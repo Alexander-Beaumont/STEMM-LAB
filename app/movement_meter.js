@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 
+
 export function calculateMovement(x, y, z) {
-  return Math.sqrt(x * x + y * y + z * z);
+  const totalAcceleration = Math.sqrt(x * x + y * y + z * z);
+
+  // Removes the normal gravity baseline, making movement/shaking easier to detect.
+  return Math.abs(totalAcceleration - 1);
 }
 
 export function classifyMovement(value) {
-  if (value < 1.02) return 'Smooth';
-  if (value < 1.15) return 'Moderate';
+  if (value < 0.08) return 'Smooth';
+  if (value < 0.25) return 'Moderate';
   return 'Shaky';
 }
 
@@ -55,13 +59,22 @@ export function MovementMeter({ onMovementChange }) {
     setMeasuring(false);
   }
 
+  useEffect(() => {
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
+  }, [subscription]);
+
   const movementValue = calculateMovement(data.x, data.y, data.z);
   const movementLevel = measuring ? classifyMovement(movementValue) : 'Not Measuring';
+
   const feedback = measuring
     ? getMovementFeedback(movementLevel)
     : 'Press Start to begin measuring your movement.';
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (onMovementChange) {
       onMovementChange({
         x: data.x,
@@ -82,16 +95,24 @@ export function MovementMeter({ onMovementChange }) {
       <Text style={styles.level}>{movementLevel}</Text>
 
       <Text style={styles.value}>
-        Intensity: {movementValue.toFixed(2)}
+        Movement Intensity: {movementValue.toFixed(2)}
       </Text>
 
       <Text style={styles.feedback}>{feedback}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={startMeasuring}>
+      <TouchableOpacity
+        style={[styles.button, measuring && styles.disabledButton]}
+        onPress={startMeasuring}
+        disabled={measuring}
+      >
         <Text style={styles.buttonText}>Start Measuring</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.stopButton} onPress={stopMeasuring}>
+      <TouchableOpacity
+        style={[styles.stopButton, !measuring && styles.disabledButton]}
+        onPress={stopMeasuring}
+        disabled={!measuring}
+      >
         <Text style={styles.buttonText}>Stop Measuring</Text>
       </TouchableOpacity>
     </View>
@@ -138,6 +159,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 6,
     marginTop: 8,
+  },
+  disabledButton: {
+    backgroundColor: '#999',
   },
   buttonText: {
     color: '#fff',
