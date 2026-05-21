@@ -22,17 +22,19 @@ export default function Activity5Sensor() {
 
       <MovementMeter
         hapticsEnabled={feedbackEnabled}
-       onMovementChange={(data: any) => {
+        onMovementChange={(data: any) => {
+        if (!data.isFinal) return;
+
         if (movement === 'Movement 1') {
-            activity5Results.movement1 = data.movementLevel;
+            activity5Results.movement1 = data.finalLevel;
         }
 
         if (movement === 'Movement 2') {
-            activity5Results.movement2 = data.movementLevel;
+            activity5Results.movement2 = data.finalLevel;
         }
 
         if (movement === 'Movement 3') {
-            activity5Results.movement3 = data.movementLevel;
+            activity5Results.movement3 = data.finalLevel;
         }
         }}
       />

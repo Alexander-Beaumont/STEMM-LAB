@@ -4,12 +4,13 @@ import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { activity5Results } from '../global.js';
 
+
+
+export default function Activity5() {
 const [movement1Result, setMovement1Result] = useState(activity5Results.movement1);
 const [movement2Result, setMovement2Result] = useState(activity5Results.movement2);
 const [movement3Result, setMovement3Result] = useState(activity5Results.movement3);
 
-
-export default function Activity5() {
 useFocusEffect(
     useCallback(() => {
         setMovement1Result(activity5Results.movement1);

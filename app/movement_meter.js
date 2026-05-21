@@ -18,14 +18,24 @@ export function classifyMovement(value) {
     // vibratePhone();
   return 'Shaky';
 }
+export function classifyAverageMovement(readings) {
+  if (!readings || readings.length === 0) {
+    return 'Not Started';
+  }
+
+  const average =
+    readings.reduce((total, value) => total + value, 0) / readings.length;
+
+  return classifyMovement(average);
+}
 
 export function getMovementFeedback(level) {
-  if (level === 'Steadily') {
+  if (level === 'Steady') {
     return 'Good control. Your movement is slow and stable.';
   }
 
   if (level === 'Moderate') {
-    return 'Moderate movement detected. Try to move more steadily.';
+    return 'Moderate movement detected. Try to move more smoothly.';
   }
 
   if (level === 'Shaky') {
@@ -38,28 +48,45 @@ export function MovementMeter({ onMovementChange, hapticsEnabled = false }) {
   const [data, setData] = useState({ x: 0, y: 0, z: 0 });
   const [subscription, setSubscription] = useState(null);
   const [measuring, setMeasuring] = useState(false);
+  const [readings, setReadings] = useState([]);
 
   function startMeasuring() {
     if (subscription) return;
-
+    setReadings([]);
     Accelerometer.setUpdateInterval(50);
 
     const sub = Accelerometer.addListener((accelerometerData) => {
-      setData(accelerometerData);
+    setData(accelerometerData);
+
+    const value = calculateMovement(
+        accelerometerData.x,
+        accelerometerData.y,
+        accelerometerData.z
+    );
+
+    setReadings((previous) => [...previous, value]);
     });
 
     setSubscription(sub);
     setMeasuring(true);
   }
 
-  function stopMeasuring() {
-    if (subscription) {
-      subscription.remove();
-      setSubscription(null);
-    }
+function stopMeasuring() {
+  const finalLevel = classifyAverageMovement(readings);
 
-    setMeasuring(false);
+  if (subscription) {
+    subscription.remove();
+    setSubscription(null);
   }
+
+  setMeasuring(false);
+
+  if (onMovementChange) {
+    onMovementChange({
+    finalLevel,
+    isFinal: true,
+    });  }
+}
 
 useEffect(() => {
   return () => {
