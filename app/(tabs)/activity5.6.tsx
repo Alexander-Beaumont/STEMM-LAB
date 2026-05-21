@@ -5,11 +5,29 @@ import { useFocusEffect } from '@react-navigation/native';
 import { activity5Results } from '../global.js';
 
 
+function getCompletionStatus(result: string) {
+  if (result === 'Not Started') {
+    return {
+      text: 'To Do',
+      style: styles.todo,
+    };
+  }
+
+  return {
+    text: 'Complete',
+    style: styles.complete,
+  };
+}
 
 export default function Activity5() {
 const [movement1Result, setMovement1Result] = useState(activity5Results.movement1);
 const [movement2Result, setMovement2Result] = useState(activity5Results.movement2);
 const [movement3Result, setMovement3Result] = useState(activity5Results.movement3);
+
+const movement1Status = getCompletionStatus(movement1Result);
+const movement2Status = getCompletionStatus(movement2Result);
+const movement3Status = getCompletionStatus(movement3Result);
+
 
 useFocusEffect(
     useCallback(() => {
@@ -56,11 +74,13 @@ useFocusEffect(
           <Text style={styles.resultText}>{movement1Result}</Text>
         </View>
 
-        <View style={[styles.statusBox, styles.complete]}>
-          <Text style={styles.statusText}>Complete</Text>
+        <View style={[styles.statusBox, movement1Status.style]}>
+            <Text style={styles.statusText}>
+                {movement1Status.text}
+            </Text>
         </View>
-      </View>
-
+        </View>
+        
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.movementButton}
@@ -81,10 +101,12 @@ useFocusEffect(
             <Text style={styles.resultText}>{movement2Result}</Text>
         </View>
 
-        <View style={[styles.statusBox, styles.inProgress]}>
-          <Text style={styles.statusText}>In Progress</Text>
+        <View style={[styles.statusBox, movement2Status.style]}>
+            <Text style={styles.statusText}>
+                {movement2Status.text}
+            </Text>
         </View>
-      </View>
+        </View>
 
       <View style={styles.row}>
         <TouchableOpacity
@@ -106,10 +128,12 @@ useFocusEffect(
             <Text style={styles.resultText}>{movement3Result}</Text>
         </View>
 
-        <View style={[styles.statusBox, styles.todo]}>
-          <Text style={styles.statusText}>To Do</Text>
+        <View style={[styles.statusBox, movement3Status.style]}>
+            <Text style={styles.statusText}>
+                {movement3Status.text}
+            </Text>
         </View>
-      </View>
+        </View>
 
       <View style={styles.feedbackRow}>
         <Text style={styles.feedbackLabel}>Enable vibration feedback</Text>
