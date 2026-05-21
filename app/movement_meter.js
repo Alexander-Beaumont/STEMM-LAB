@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import * as Haptics from 'expo-haptics';
 
+
+// async function vibratePhone() {
+//   await Haptics.notificationAsync(
+//     Haptics.NotificationFeedbackType.Success
+//   );
+// }
 
 export function calculateMovement(x, y, z) {
   const totalAcceleration = Math.sqrt(x * x + y * y + z * z);
@@ -13,6 +20,7 @@ export function calculateMovement(x, y, z) {
 export function classifyMovement(value) {
   if (value < 0.08) return 'Smooth';
   if (value < 0.25) return 'Moderate';
+    // vibratePhone();
   return 'Shaky';
 }
 
@@ -70,6 +78,13 @@ export function MovementMeter({ onMovementChange }) {
   const movementValue = calculateMovement(data.x, data.y, data.z);
   const movementLevel = measuring ? classifyMovement(movementValue) : 'Not Measuring';
 
+    useEffect(() => {
+  if (measuring && movementLevel === 'Shaky') {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+  }
+}, [movementLevel, measuring]);
+
+  
   const feedback = measuring
     ? getMovementFeedback(movementLevel)
     : 'Press Start to begin measuring your movement.';
