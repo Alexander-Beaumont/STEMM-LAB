@@ -34,5 +34,11 @@ global.activity2Reflection = '';
 global.activity3Reflection = '';
 global.activity4Reflection = '';
 
-
-global.activity5Complete = [false,false,false];
+export const activity5Results = {
+  movement1: 'Not Started',
+  movement2: 'Not Started',
+  movement3: 'Not Started',
+};
+export default function HiddenRoute() {
+  return null;
+}

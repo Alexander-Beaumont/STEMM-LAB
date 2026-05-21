@@ -18,19 +18,19 @@ export function calculateMovement(x, y, z) {
 }
 
 export function classifyMovement(value) {
-  if (value < 0.08) return 'Smooth';
+  if (value < 0.08) return 'Steady';
   if (value < 0.25) return 'Moderate';
     // vibratePhone();
   return 'Shaky';
 }
 
 export function getMovementFeedback(level) {
-  if (level === 'Smooth') {
+  if (level === 'Steadily') {
     return 'Good control. Your movement is slow and stable.';
   }
 
   if (level === 'Moderate') {
-    return 'Moderate movement detected. Try to move more smoothly.';
+    return 'Moderate movement detected. Try to move more steadily.';
   }
 
   if (level === 'Shaky') {
@@ -39,8 +39,7 @@ export function getMovementFeedback(level) {
 
   return 'Press Start to begin measuring your movement.';
 }
-
-export function MovementMeter({ onMovementChange }) {
+export function MovementMeter({ onMovementChange, hapticsEnabled = false }) {
   const [data, setData] = useState({ x: 0, y: 0, z: 0 });
   const [subscription, setSubscription] = useState(null);
   const [measuring, setMeasuring] = useState(false);
@@ -48,7 +47,7 @@ export function MovementMeter({ onMovementChange }) {
   function startMeasuring() {
     if (subscription) return;
 
-    Accelerometer.setUpdateInterval(100);
+    Accelerometer.setUpdateInterval(50);
 
     const sub = Accelerometer.addListener((accelerometerData) => {
       setData(accelerometerData);
@@ -67,23 +66,26 @@ export function MovementMeter({ onMovementChange }) {
     setMeasuring(false);
   }
 
-  useEffect(() => {
-    return () => {
-      if (subscription) {
-        subscription.remove();
-      }
-    };
-  }, [subscription]);
+useEffect(() => {
+  return () => {
+    if (subscription) {
+      subscription.remove();
+      setSubscription(null);
+      setMeasuring(false);
+    }
+  };
+}, [subscription]);
 
   const movementValue = calculateMovement(data.x, data.y, data.z);
   const movementLevel = measuring ? classifyMovement(movementValue) : 'Not Measuring';
 
     useEffect(() => {
-  if (measuring && movementLevel === 'Shaky') {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-  }
-}, [movementLevel, measuring]);
-
+    if (measuring && hapticsEnabled && movementLevel === 'Shaky') {
+        Haptics.notificationAsync(
+        Haptics.NotificationFeedbackType.Error
+        );
+    }
+    }, [movementLevel, measuring, hapticsEnabled]);
   
   const feedback = measuring
     ? getMovementFeedback(movementLevel)
@@ -133,7 +135,9 @@ export function MovementMeter({ onMovementChange }) {
     </View>
   );
 }
-
+export default function HiddenRoute() {
+  return null;
+}
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,

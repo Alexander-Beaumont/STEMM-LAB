@@ -1,15 +1,28 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Switch } from 'react-native';
 import { router } from 'expo-router';
-import { MovementMeter } from '../movement_meter.js';
+import { useFocusEffect } from '@react-navigation/native';
+import { activity5Results } from '../global.js';
+
+const [movement1Result, setMovement1Result] = useState(activity5Results.movement1);
+const [movement2Result, setMovement2Result] = useState(activity5Results.movement2);
+const [movement3Result, setMovement3Result] = useState(activity5Results.movement3);
+
 
 export default function Activity5() {
+useFocusEffect(
+    useCallback(() => {
+        setMovement1Result(activity5Results.movement1);
+        setMovement2Result(activity5Results.movement2);
+        setMovement3Result(activity5Results.movement3);
+    }, [])
+    );
+
+  const [feedbackEnabled, setFeedbackEnabled] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.topIcons}>
-        <TouchableOpacity onPress={() => router.push('/leaderboard' as any)}>
-          <Text style={styles.icon}>▮▮▮</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity onPress={() => router.push('/' as any)}>
           <Text style={styles.icon}>⌂</Text>
         </TouchableOpacity>
@@ -20,22 +33,98 @@ export default function Activity5() {
       </View>
 
       <Text style={styles.appTitle}>STEMM LAB APP</Text>
-
       <Text style={styles.title}>Human Performance Lab</Text>
 
-      <Text style={styles.description}>
-        Use your phone’s accelerometer to measure movement smoothness and vibration during a guided stretch.
-      </Text>
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.movementButton}
+          onPress={() =>
+            router.push({
+              pathname: '/activity5_sensor' as any,
+              params: {
+                movement: 'Movement 1',
+                feedback: feedbackEnabled ? 'true' : 'false',
+              },
+            })
+          }
+        >
+          <Text style={styles.buttonTextDark}>Movement 1</Text>
+        </TouchableOpacity>
 
-      <MovementMeter
-        onMovementChange={(data: any) => {
-          console.log('Movement:', data.movementValue);
-          console.log('Level:', data.movementLevel);
-        }}
-      />
+        <View style={styles.resultBox}>
+          <Text style={styles.resultText}>{movement1Result}</Text>
+        </View>
+
+        <View style={[styles.statusBox, styles.complete]}>
+          <Text style={styles.statusText}>Complete</Text>
+        </View>
+      </View>
+
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.movementButton}
+          onPress={() =>
+            router.push({
+              pathname: '/activity5_sensor' as any,
+              params: {
+                movement: 'Movement 2',
+                feedback: feedbackEnabled ? 'true' : 'false',
+              },
+            })
+          }
+        >
+          <Text style={styles.buttonTextDark}>Movement 2</Text>
+        </TouchableOpacity>
+
+        <View style={styles.resultBox}>
+            <Text style={styles.resultText}>{movement2Result}</Text>
+        </View>
+
+        <View style={[styles.statusBox, styles.inProgress]}>
+          <Text style={styles.statusText}>In Progress</Text>
+        </View>
+      </View>
+
+      <View style={styles.row}>
+        <TouchableOpacity
+          style={styles.movementButton}
+          onPress={() =>
+            router.push({
+              pathname: '/activity5_sensor' as any,
+              params: {
+                movement: 'Movement 3',
+                feedback: feedbackEnabled ? 'true' : 'false',
+              },
+            })
+          }
+        >
+          <Text style={styles.buttonTextDark}>Movement 3</Text>
+        </TouchableOpacity>
+
+        <View style={styles.resultBox}>
+            <Text style={styles.resultText}>{movement3Result}</Text>
+        </View>
+
+        <View style={[styles.statusBox, styles.todo]}>
+          <Text style={styles.statusText}>To Do</Text>
+        </View>
+      </View>
+
+      <View style={styles.feedbackRow}>
+        <Text style={styles.feedbackLabel}>Enable vibration feedback</Text>
+
+        <Switch
+          value={feedbackEnabled}
+          onValueChange={setFeedbackEnabled}
+        />
+      </View>
 
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.continueButton}>
+        <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,7 +133,7 @@ export default function Activity5() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
     paddingTop: 55,
     backgroundColor: '#fff',
   },
@@ -64,24 +153,90 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '700',
-    marginBottom: 12,
+    marginBottom: 40,
+    textAlign: 'center',
   },
-  description: {
-    fontSize: 15,
-    lineHeight: 21,
-    marginBottom: 20,
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 14,
+  },
+  movementButton: {
+    flex: 1.2,
+    backgroundColor: '#c7c3c3',
+    paddingVertical: 12,
+    borderRadius: 6,
+  },
+  resultBox: {
+    flex: 1,
+    backgroundColor: '#f3eeee',
+    paddingVertical: 12,
+    borderRadius: 6,
+  },
+  statusBox: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 6,
+  },
+  complete: {
+    backgroundColor: '#00ff3b',
+  },
+  inProgress: {
+    backgroundColor: '#ffff00',
+  },
+  todo: {
+    backgroundColor: '#ff1f1f',
+  },
+  buttonTextDark: {
+    textAlign: 'center',
+    color: '#000',
+    fontWeight: '600',
+    fontSize: 12,
+  },
+  resultText: {
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 12,
+  },
+  statusText: {
+    textAlign: 'center',
+    color: '#000',
+    fontWeight: '600',
+    fontSize: 12,
+  },
+  feedbackRow: {
+    marginTop: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feedbackLabel: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   backButton: {
-    borderWidth: 1,
-    borderColor: '#000',
+    backgroundColor: '#000',
     paddingVertical: 14,
     borderRadius: 6,
-    marginTop: 20,
+    marginTop: 'auto',
+    marginBottom: 10,
+  },
+  continueButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    borderRadius: 6,
+    marginBottom: 30,
   },
   backButtonText: {
-    color: '#000',
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  continueButtonText: {
+    color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
   },
