@@ -4,11 +4,6 @@ import { Accelerometer } from 'expo-sensors';
 import * as Haptics from 'expo-haptics';
 
 
-// async function vibratePhone() {
-//   await Haptics.notificationAsync(
-//     Haptics.NotificationFeedbackType.Success
-//   );
-// }
 
 export function calculateMovement(x, y, z) {
   const totalAcceleration = Math.sqrt(x * x + y * y + z * z);
