@@ -100,27 +100,28 @@ export function SoundMeter({ onSoundChange }) {
       });
     }
   }, [meterValue, approxDb, soundLevel, measuring]);
-
+  
+  const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sound Meter</Text>
+      <Text style={[styles.title,{color: darkMode ? '#fff' : '#111'}]}>Sound Meter</Text>
 
-      <Text style={styles.level}>{soundLevel}</Text>
+      <Text style={[styles.level,{color: darkMode ? '#fff' : '#111'}]}>{soundLevel}</Text>
 
-      <Text style={styles.meter}>
+      <Text style={[styles.meter,{color: darkMode ? '#fff' : '#111'}]}>
         Approx dB: {approxDb ?? 'N/A'}
       </Text>
 
-      <Text style={styles.meter}>
+      <Text style={[styles.meter,{color: darkMode ? '#fff' : '#111'}]}>
         Raw meter value: {typeof meterValue === 'number' ? meterValue.toFixed(2) : 'N/A'}
       </Text>
 
-      <TouchableOpacity style={styles.button} onPress={startMeasuring}>
-        <Text style={styles.buttonText}>Start Measuring</Text>
+      <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={startMeasuring}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Start Measuring</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={stopMeasuring}>
-        <Text style={styles.buttonText}>Stop Measuring</Text>
+      <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={stopMeasuring}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Stop Measuring</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,7 +1,9 @@
 global.darkmodeEnabled = true;
 global.videos = [];
 global.activity1Complete = [false,false,false,false];
+global.activity4Complete = [false,false,false];
 global.activity1DataIndex;
+global.activity4DataIndex;
 global.activity1Data = [
     {time:null,mass:null,height:null,accuracy:null,video:[]},
     {time:null,mass:null,height:null,accuracy:null,video:[]},
@@ -22,6 +24,21 @@ global.activity3Data = {
     checkbox3:false,
     checkbox4:false,
 }
+global.activity4Data = [
+    {vibration:null,outcome:null},
+    {vibration:null,outcome:null},
+    {vibration:null,outcome:null}
+]
 global.activity1Reflection = '';
 global.activity2Reflection = '';
 global.activity3Reflection = '';
+global.activity4Reflection = '';
+
+export const activity5Results = {
+  movement1: 'Not Started',
+  movement2: 'Not Started',
+  movement3: 'Not Started',
+};
+export default function HiddenRoute() {
+  return null;
+}

@@ -32,10 +32,7 @@ export default class Screen {
         this.decorators.push(decorator);
     }
     getScreenCode() {
-    const [darkMode, setDarkMode] = useState(false);
-    if (darkMode!=global.darkmodeEnabled) {
-        setDarkMode(global.darkmodeEnabled);
-    }
+    const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
     const styles = StyleSheet.create({
             container: {
                 flex: 1,
