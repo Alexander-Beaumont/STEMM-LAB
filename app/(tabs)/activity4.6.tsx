@@ -2,6 +2,8 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+import { GyroscopeMeter } from '../gyroscope.js';
+
 
 export default function Activity4() {
   
@@ -50,7 +52,16 @@ export default function Activity4() {
         <Text style={[styles.title,
             {color: darkMode ? '#fff' : '#111'}
         ]}>Earthquake Resistant Structure</Text>
-        
+
+      <GyroscopeMeter
+        onGyroscopeChange={(data: any) => {
+          if (!data.isFinal) return;
+
+          setVibration(data.measuredVibration);
+          setOutcome(data.finalLevel);
+        }}
+      />
+      
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
