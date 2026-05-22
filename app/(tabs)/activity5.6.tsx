@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Switch } from 'react-native';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
+import '../global.js';
 import { activity5Results } from '../global.js';
-
 
 function getCompletionStatus(result: string) {
   if (result === 'Not Started') {
@@ -12,7 +12,6 @@ function getCompletionStatus(result: string) {
       style: styles.todo,
     };
   }
-
   return {
     text: 'Complete',
     style: styles.complete,
@@ -20,6 +19,7 @@ function getCompletionStatus(result: string) {
 }
 
 export default function Activity5() {
+const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
 const [movement1Result, setMovement1Result] = useState(activity5Results.movement1);
 const [movement2Result, setMovement2Result] = useState(activity5Results.movement2);
 const [movement3Result, setMovement3Result] = useState(activity5Results.movement3);
@@ -40,23 +40,33 @@ useFocusEffect(
   const [feedbackEnabled, setFeedbackEnabled] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View
+    style={[
+        styles.container,
+        { backgroundColor: darkMode ? '#111' : '#fff' },
+    ]}
+    >
       <View style={styles.topIcons}>
         <TouchableOpacity onPress={() => router.push('/' as any)}>
-          <Text style={styles.icon}>⌂</Text>
+          <Text style={[styles.icon, { color: darkMode ? '#fff' : '#111' }]}>⌂</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push('/settings' as any)}>
-          <Text style={styles.icon}>⚙</Text>
-        </TouchableOpacity>
+            <Text style={[styles.icon, { color: darkMode ? '#fff' : '#111' }]}>
+                ⚙
+            </Text>
+            </TouchableOpacity>
       </View>
 
-      <Text style={styles.appTitle}>STEMM LAB APP</Text>
-      <Text style={styles.title}>Human Performance Lab</Text>
+      <Text style={[styles.appTitle, { color: darkMode ? '#fff' : '#111' }]}>STEMM LAB APP</Text>
+      <Text style={[styles.title, { color: darkMode ? '#fff' : '#111' }]}>Human Performance Lab</Text>
 
       <View style={styles.row}>
         <TouchableOpacity
-          style={styles.movementButton}
+          style={[
+            styles.movementButton,
+            { backgroundColor: darkMode ? '#ddd' : '#c7c3c3' },
+            ]}
           onPress={() =>
             router.push({
               pathname: '/activity5_sensor' as any,
@@ -70,7 +80,11 @@ useFocusEffect(
           <Text style={styles.buttonTextDark}>Movement 1</Text>
         </TouchableOpacity>
 
-        <View style={styles.resultBox}>
+        <View style={[ 
+            styles.resultBox, 
+            { backgroundColor: darkMode ? '#333' : '#f3eeee' },
+            ]}
+        >
           <Text style={styles.resultText}>{movement1Result}</Text>
         </View>
 
@@ -83,7 +97,10 @@ useFocusEffect(
         
       <View style={styles.row}>
         <TouchableOpacity
-          style={styles.movementButton}
+          style={[
+            styles.movementButton,
+            { backgroundColor: darkMode ? '#ddd' : '#c7c3c3' },
+        ]} 
           onPress={() =>
             router.push({
               pathname: '/activity5_sensor' as any,
@@ -97,7 +114,11 @@ useFocusEffect(
           <Text style={styles.buttonTextDark}>Movement 2</Text>
         </TouchableOpacity>
 
-        <View style={styles.resultBox}>
+        <View style={[
+            styles.resultBox,
+            { backgroundColor: darkMode ? '#333' : '#f3eeee' },
+            ]}
+            >
             <Text style={styles.resultText}>{movement2Result}</Text>
         </View>
 
@@ -110,7 +131,10 @@ useFocusEffect(
 
       <View style={styles.row}>
         <TouchableOpacity
-          style={styles.movementButton}
+          style={[ 
+            styles.movementButton, 
+            { backgroundColor: darkMode ? '#ddd' : '#c7c3c3' }, 
+        ]}
           onPress={() =>
             router.push({
               pathname: '/activity5_sensor' as any,
@@ -124,7 +148,11 @@ useFocusEffect(
           <Text style={styles.buttonTextDark}>Movement 3</Text>
         </TouchableOpacity>
 
-        <View style={styles.resultBox}>
+        <View style={[ 
+            styles.resultBox,
+            { backgroundColor: darkMode ? '#333' : '#f3eeee' },
+        ]}
+>
             <Text style={styles.resultText}>{movement3Result}</Text>
         </View>
 
@@ -136,7 +164,9 @@ useFocusEffect(
         </View>
 
       <View style={styles.feedbackRow}>
-        <Text style={styles.feedbackLabel}>Enable vibration feedback</Text>
+        <Text style={[ styles.feedbackLabel,
+            { color: darkMode ? '#fff' : '#111' },
+                ]} >Enable vibration feedback</Text>
 
         <Switch
           value={feedbackEnabled}
