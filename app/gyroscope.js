@@ -17,11 +17,11 @@ export function getRotationFeedback(level) {
     return 'Good stability. The structure is not rotating much.';
   }
 
-  if (level === 'Wobbly') {
+  else if (level === 'Wobbly') {
     return 'Some wobble detected. The structure may need improvement.';
   }
 
-  if (level === 'Unstable') {
+  else if (level === 'Unstable') {
     return 'High rotation detected. The structure is unstable.';
   }
 
