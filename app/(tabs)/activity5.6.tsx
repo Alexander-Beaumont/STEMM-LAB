@@ -143,14 +143,17 @@ useFocusEffect(
           onValueChange={setFeedbackEnabled}
         />
       </View>
+    
+      <TouchableOpacity style={styles.continueButton}
+      onPress={() => router.push('/activity5.7' as any)}>
+        <Text style={styles.continueButtonText}>Continue</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.continueButton}>
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
+
     </View>
   );
 }
@@ -245,15 +248,20 @@ const styles = StyleSheet.create({
   backButton: {
     backgroundColor: '#000',
     paddingVertical: 14,
+    width: "100%",
     borderRadius: 6,
-    marginTop: 'auto',
-    marginBottom: 10,
-  },
+    bottom: 70,
+    alignSelf: 'center',
+    position:"absolute",
+    },
   continueButton: {
     backgroundColor: '#000',
     paddingVertical: 14,
+    width: "100%",
     borderRadius: 6,
-    marginBottom: 30,
+    bottom: 130,
+    alignSelf: 'center',
+    position:"absolute",
   },
   backButtonText: {
     color: '#fff',
