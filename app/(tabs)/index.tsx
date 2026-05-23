@@ -66,10 +66,10 @@ export default function HomeScreen() {
   const [canContinue, setCanContinue] = useState(false);
   
   const [feedback, setFeedback] = useState("");
-  const [grade, setGrade] = useState("4");
-  const [name, setName] = useState("Gareth");
-  const [team, setTeam] = useState("Fuckers");
-  const [password, setPassword] = useState("Fuck you");
+  const [grade, setGrade] = useState("Placeholder Grade");
+  const [name, setName] = useState("Placeholder Name");
+  const [team, setTeam] = useState("Placeholder Team");
+  const [password, setPassword] = useState("Placeholder Password");
   const  addItem = async () => {
     const citiesRef = collection(db, "Teams");
 
