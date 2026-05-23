@@ -2,6 +2,7 @@ global.team
 global.darkmodeEnabled = true;
 global.activity1Complete = {0:false,1:false,2:false,3:false};
 global.activity4Complete = {0:false,1:false,2:false};
+
 global.activity1Data = {
     0:{time:null,mass:null,height:null,accuracy:null,video:[]},
     1:{time:null,mass:null,height:null,accuracy:null,video:[]},
@@ -43,11 +44,6 @@ global.activity5Reflection = '';
 global.activity6Reflection = '';
 global.activity7Reflection = '';
 
-global.activity5Results = {
-  movement1: 'Not Started',
-  movement2: 'Not Started',
-  movement3: 'Not Started',
-};
 export default function HiddenRoute() {
   return null;
 }

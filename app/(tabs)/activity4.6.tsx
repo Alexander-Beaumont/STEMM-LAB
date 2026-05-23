@@ -133,26 +133,25 @@ export default function Activity4() {
           if (!data.isFinal) return;
 
           setVibration(data.measuredVibration);
-          setOutcome(data.finalLevel);
         }}
       />
       
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Measured Vibration</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Final Average</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',
                   color: darkMode ? '#444' : '#fff',}
                 ]}
                   placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Vibration" value={vibration} onChangeText={(e) => setVibration(e)} />
+                  placeholder="Vibration" value={vibration} editable={false} />
       </View>
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Outcome</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Were you right?</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',

@@ -77,6 +77,8 @@ function stopMeasuring() {
       readings.reduce((total, value) => total + value, 0) / readings.length;
 
     measuredVibration = average.toFixed(2);
+    displayedVibration = measuredVibration;
+
     finalLevel = classifyRotation(average);
   }
 
@@ -93,6 +95,7 @@ function stopMeasuring() {
       finalLevel,
       isFinal: true,
     });
+    
   }
 }
 
@@ -128,7 +131,7 @@ function stopMeasuring() {
       });
     }
   }, [data, rotationValue, rotationLevel, feedback, measuring]);
-
+  let displayedVibration = rotationValue.toFixed(2)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Gyroscope Stability Meter</Text>
@@ -136,7 +139,7 @@ function stopMeasuring() {
       <Text style={styles.level}>{rotationLevel}</Text>
 
       <Text style={styles.value}>
-        Measured vibration: {rotationValue.toFixed(2)}
+        Measured vibration: {displayedVibration}
       </Text>
 
       <Text style={styles.feedback}>{feedback}</Text>

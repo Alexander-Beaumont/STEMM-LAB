@@ -10,6 +10,7 @@ declare global {
     var activity6Reflection: String;
     var activity7Reflection: String;
     var team: String;
+    var score: number;
 }
 
 

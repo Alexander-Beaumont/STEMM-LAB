@@ -1,57 +1,120 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import firebase from 'firebase/compat/app';
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";
 
 export default function HomeScreen() {
-  const [darkMode, setDarkMode] = useState(false);
-    if (darkMode!=global.darkmodeEnabled) {
-      setDarkMode(global.darkmodeEnabled);
-    }
-  function getScores() {
-    let data = [
-      {
-        "teamName" : "Template Team 1",
-        "score" : 10,
-        "key":0
-      },
-      {
-        "teamName" : "Template Team 2",
-        "score" : 150,
-        "key":1
-      },
-      {
-        "teamName" : "Template Team 3",
-        "score" : 100,
-        "key":2
-      },
-      {
-        "teamName" : "Template Team 4",
-        "score" : 40,
-        "key":3
-      },
-      {
-        "teamName" : "Template Team 5",
-        "score" : 79,
-        "key":4
-      },
-      {
-        "teamName" : "Template Team 6",
-        "score" : 92,
-        "key":5
+  const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
+  const [hasRun, setHasRun] = useState(false);
+  const [rankings, setRankings] = useState([<View key={0} />]);
+  const db = firebase.firestore();
+  async function getScores() {
+    const teamsRef = collection(db, "Teams");
+
+    const q = query(teamsRef);
+    const querySnapshot = await getDocs(q)
+    let data: { teamName: string; score: number }[] = [];
+    querySnapshot.forEach((doc) => {
+      let score = 0;
+      if (doc.data().activity1Reflection.length>10) {
+        score += 10;
       }
-    ];
+      if (doc.data().activity2Reflection.length>10) {
+        score += 10;
+      }
+      if (doc.data().activity3Reflection.length>10) {
+        score += 10;
+      }
+      if (doc.data().activity4Reflection.length>10) {
+        score += 10;
+      }
+      if (doc.data().activity5Reflection.length>10) {
+        score += 10;
+      }
+      if (doc.data().activity6Reflection.length>10) {
+        score += 10;
+      }
+      if (doc.data().activity7Reflection.length>10) {
+        score += 10;
+      }
+      for (let i in doc.data().activity1Data) {
+        if (doc.data().activity1Data[i].accuracy!=null) {
+          score += 1;
+        }
+        if (doc.data().activity1Data[i].height!=null) {
+          score += 1;
+        }
+        if (doc.data().activity1Data[i].mass!=null) {
+          score += 1;
+        }
+        if (doc.data().activity1Data[i].time!=null) {
+          score += 1;
+        }
+        if (doc.data().activity1Data[i].video.length!=0) {
+          score += 1;
+        }
+      }
+      if (doc.data().activity3Data.material1!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.material2!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.material3!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.material4!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.bend1!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.bend2!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.bend3!="") {
+        score += 1;
+      }
+      if (doc.data().activity3Data.bend4!="") {
+        score += 1;
+      }
+      for (let i in doc.data().activity4Data) {
+        if (doc.data().activity4Data[i].vibration!=null) {
+          score += 3;
+        }
+        if (doc.data().activity4Data[i].outcome!=null) {
+          score += 3;
+        }
+      }
+      if (doc.data().activity5Results.movement1!="Not Started") {
+        score += 2;
+      }
+      if (doc.data().activity5Results.movement2!="Not Started") {
+        score += 3;
+      }
+      if (doc.data().activity5Results.movement3!="Not Started") {
+        score += 4;
+      }
+      
+      data.push({
+      "teamName" : doc.data().team,
+      "score" : score
+    })
+    });
     return data;
   }
-  function displayRankings() {
-    let data = getScores();
-
-    let darkmodeCSS = {backgroundColor: darkMode ? '#f4f4f4' : '#111',
+  const displayRankings = async () => {
+    let data = await getScores();
+    let darkmodeCSS = {backgroundColor: darkMode ? '#fff' : '#111',
           color: darkMode ? '#111' : '#fff'}
 
-    let myDisplay = [<View style={styles.leaderboardRow}>
-                      <Text style={[styles.leaderboardHeader,darkmodeCSS]}>Team Name</Text>
-                      <Text style={[styles.leaderboardHeader,darkmodeCSS]}>Score</Text>
-                    </View>];
+    let myDisplay = [];
+    myDisplay.push(<View style={[styles.headerRow,darkmodeCSS]} key={myDisplay.length}>
+                      <Text style={[styles.leaderboardHeader]} key={myDisplay.length+"a"}>Team Name</Text>
+                      <Text style={[styles.leaderboardHeader]} key={myDisplay.length+"b"}>Score</Text>
+                    </View>)
     let dataLength = data.length;
     for (var i=0; i<dataLength&&i<5; i++) {
       let highest = 0;
@@ -62,13 +125,17 @@ export default function HomeScreen() {
           highestIdx = j;
         }
       }
-      myDisplay.push(<View style={styles.leaderboardRow}>
-                      <Text style={[styles.leaderboardItem,darkmodeCSS]}>{data[highestIdx].teamName}</Text>
-                      <Text style={[styles.leaderboardItem,darkmodeCSS]}>{highest}</Text>
+      myDisplay.push(<View style={styles.leaderboardRow} key={myDisplay.length}>
+                      <Text style={[styles.leaderboardItem,darkmodeCSS]} key={myDisplay.length+"a"}>{data[highestIdx].teamName}</Text>
+                      <Text style={[styles.leaderboardItem,darkmodeCSS]} key={myDisplay.length+"b"}>{highest}</Text>
                     </View>);
       data.splice(highestIdx,1);
     }
-    return myDisplay;
+    setRankings(myDisplay);
+  }
+  if(!hasRun) {
+    displayRankings()
+    setHasRun(true)
   }
   return (
     <View style={[styles.container,
@@ -94,7 +161,7 @@ export default function HomeScreen() {
         {color: darkMode ? '#fff' : '#111'}
       ]}>STEMM LAB APP</Text>
 
-      {displayRankings()}
+      {rankings}
 
     </View>
   );
@@ -105,7 +172,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 28,
     paddingTop: 55,
-    backgroundColor: '#fff',
   },
   topIcons: {
     flexDirection: 'row',
@@ -124,8 +190,6 @@ const styles = StyleSheet.create({
   },
   leaderboardItem: {
     textAlign: 'center',
-    backgroundColor: '#000',
-    color: '#fff',
     padding: 10,
     borderRadius: 6,
     width:'47%',
@@ -133,11 +197,9 @@ const styles = StyleSheet.create({
   },
   leaderboardHeader: {
     textAlign: 'center',
-    backgroundColor: '#000',
-    color: '#fff',
     padding: 10,
-    borderRadius: 0,
     width:'50%',
+    borderRadius: 6,
     marginTop: 5,
   },
   leaderboardRow: {
@@ -145,6 +207,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 0,
     marginBottom: 5,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 0,
+    marginBottom: 5,
+    borderRadius: 6,
   },
   form: {
     gap: 18,
