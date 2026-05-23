@@ -4,7 +4,7 @@ import Screen from '../screen.js';
 
 export default function Activity2() {
     let activity = new Screen();
-    activity.setTitle("Sound Polution")
+    activity.setTitle("Sound Pollution")
     activity.setText("For this activity you will measure and compare sound levels in different classroom activities")
     activity.setButtonLink('/activity2.2')
 

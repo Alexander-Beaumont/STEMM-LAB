@@ -4,16 +4,19 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import Decorator from './decorator';
 
 export default class Reflection extends Decorator {
-    constructor(dataStorage) {
+    constructor(dataStorage, uploadCode) {
         super()
         this.reflection = dataStorage;
+        this.uploadCode = (e) => {uploadCode(e)};
     }
     getCode(){ 
         const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
-        const [reflection, setReflection] = useState(this.reflection);
-        function updateReflection(e) {
+        const [reflection, setReflection] = useState(global[this.reflection]);
+        const upload = (e) => {this.uploadCode(e)}
+        let updateReflection = (e) => {
             setReflection(e);
-            global.activity1Reflection = e;
+            global[this.reflection] = e;
+            upload(e)
         }
         const styles = StyleSheet.create({
             contentContainer: {
