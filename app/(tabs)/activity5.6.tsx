@@ -2,8 +2,10 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Switch } from 'react-native';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import '../global.js';
-import { activity5Results } from '../global.js';
+
+function getActivity5Results() {
+  return (global as any).activity5Results;
+}
 
 function getCompletionStatus(result: string) {
   if (result === 'Not Started') {
@@ -19,10 +21,9 @@ function getCompletionStatus(result: string) {
 }
 
 export default function Activity5() {
-const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
-const [movement1Result, setMovement1Result] = useState(activity5Results.movement1);
-const [movement2Result, setMovement2Result] = useState(activity5Results.movement2);
-const [movement3Result, setMovement3Result] = useState(activity5Results.movement3);
+  const [movement1Result, setMovement1Result] = useState(getActivity5Results().movement1);
+  const [movement2Result, setMovement2Result] = useState(getActivity5Results().movement2);
+  const [movement3Result, setMovement3Result] = useState(getActivity5Results().movement3);
 
 const movement1Status = getCompletionStatus(movement1Result);
 const movement2Status = getCompletionStatus(movement2Result);
@@ -31,9 +32,9 @@ const movement3Status = getCompletionStatus(movement3Result);
 
 useFocusEffect(
     useCallback(() => {
-        setMovement1Result(activity5Results.movement1);
-        setMovement2Result(activity5Results.movement2);
-        setMovement3Result(activity5Results.movement3);
+        setMovement1Result(getActivity5Results().movement1);
+        setMovement2Result(getActivity5Results().movement2);
+        setMovement3Result(getActivity5Results().movement3);
     }, [])
     );
 
