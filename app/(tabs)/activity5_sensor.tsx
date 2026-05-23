@@ -2,20 +2,32 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { MovementMeter } from '../movement_meter';
 import { activity5Results } from '../global.js';
+import '../global.js'
 
 export default function Activity5Sensor() {
 
+  const darkMode = global.darkmodeEnabled;
   const { movement, feedback } = useLocalSearchParams();
 
   const feedbackEnabled = feedback === 'true';
   
   return (
-    <View style={styles.container}>
-      <Text style={styles.appTitle}>STEMM LAB APP</Text>
+    <View style={[ styles.container,
+    { backgroundColor: darkMode ? '#111' : '#fff' },]}
+    >
+      <Text style={[ styles.appTitle, { color: darkMode ? '#fff' : '#111' }, ]}
+>
+  STEMM LAB APP
+</Text>
 
-      <Text style={styles.title}>{movement}</Text>
+      <Text style={[ styles.title, { color: darkMode ? '#fff' : '#111' },]}
+      >
+  {movement}
+</Text>
 
-      <Text style={styles.description}>
+      <Text style={[ styles.description,
+      { color: darkMode ? '#fff' : '#111' },
+      ]}>
         Start measuring and perform the movement slowly. The app will classify
         your movement as Steady, Moderate, or Shaky.
       </Text>
@@ -39,8 +51,11 @@ export default function Activity5Sensor() {
         }}
       />
 
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Text style={styles.backButtonText}>Back</Text>
+      <TouchableOpacity style={[styles.backButton, { borderColor: darkMode ? '#fff' : '#000',},
+
+      ]} onPress={() => router.back()}>
+        <Text style={[ styles.backButtonText, { color: darkMode ? '#fff' : '#000' }, ]}
+        >Back</Text>
       </TouchableOpacity>
     </View>
   );
