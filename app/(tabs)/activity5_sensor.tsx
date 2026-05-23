@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { MovementMeter } from '../movement_meter';
-import { activity5Results } from '../global.js';
 import '../global.js'
-
+function getActivity5Results() {
+  return (global as any).activity5Results;
+}
 export default function Activity5Sensor() {
 
   const darkMode = global.darkmodeEnabled;
@@ -38,15 +39,15 @@ export default function Activity5Sensor() {
         if (!data.isFinal) return;
 
         if (movement === 'Movement 1') {
-            activity5Results.movement1 = data.finalLevel;
+            getActivity5Results().movement1 = data.finalLevel;
         }
 
         if (movement === 'Movement 2') {
-            activity5Results.movement2 = data.finalLevel;
+            getActivity5Results().movement2 = data.finalLevel;
         }
 
         if (movement === 'Movement 3') {
-            activity5Results.movement3 = data.finalLevel;
+            getActivity5Results().movement3 = data.finalLevel;
         }
         }}
       />

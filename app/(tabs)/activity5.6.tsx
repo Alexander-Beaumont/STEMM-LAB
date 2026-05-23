@@ -21,6 +21,7 @@ function getCompletionStatus(result: string) {
 }
 
 export default function Activity5() {
+  const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   const [movement1Result, setMovement1Result] = useState(getActivity5Results().movement1);
   const [movement2Result, setMovement2Result] = useState(getActivity5Results().movement2);
   const [movement3Result, setMovement3Result] = useState(getActivity5Results().movement3);
