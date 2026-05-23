@@ -167,7 +167,7 @@ export default function HiddenRoute() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
-    padding: 16,
+    padding: 14,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
@@ -179,10 +179,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   level: {
-    fontSize: 34,
+    fontSize: 25,
     fontWeight: '700',
     textAlign: 'center',
-    marginVertical: 14,
+    marginVertical: 5,
   },
   value: {
     textAlign: 'center',

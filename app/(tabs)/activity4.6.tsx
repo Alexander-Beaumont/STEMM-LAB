@@ -200,14 +200,14 @@ export default function Activity4() {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 14,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   icon: {
     fontSize: 22,
   },
   title: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
     marginBottom: 10,
   },
