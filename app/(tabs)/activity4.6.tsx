@@ -2,27 +2,102 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+import firebase from 'firebase/compat/app';
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";
 
 export default function Activity4() {
-  
+  const [hasRun, setHasRun] = useState(false);
+    const db = firebase.firestore();
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   let currentActivity = global.activity4Data[global.activity4DataIndex] as any;
   const [vibration, setVibration] = useState(currentActivity.vibration);
   const [outcome, setOutcome] = useState(currentActivity.outcome);
+  
+  if (!hasRun) {
+    async () => {
+      const teamsRef = collection(db, "Teams");
+
+      const q = query(teamsRef, where("team", "==", global.team.trim()));
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        currentActivity.vibration = doc.data().activity4Data[global.activity4DataIndex].vibration
+        currentActivity.outcome = doc.data().activity4Data[global.activity4DataIndex].outcome
+        setVibration(currentActivity.vibration)
+        setOutcome(currentActivity.outcome)
+      });
+    }
+    setHasRun(true);
+  }
 
   function inputData() {
     currentActivity.vibration = vibration;
     currentActivity.outcome = outcome;
+    const teamRef = doc(db, 'Teams', global.team.trim());
+    switch (global.activity4DataIndex) {
+      case 0:
+        updateDoc(teamRef, {
+          "activity4Data.0.vibration": vibration,
+          "activity4Data.0.outcome": outcome,
+        });
+      break;
+      case 1:
+        updateDoc(teamRef, {
+          "activity4Data.1.vibration": vibration,
+          "activity4Data.1.outcome": outcome,
+        });
+      break;
+      case 2:
+        updateDoc(teamRef, {
+          "activity4Data.2.vibration": vibration,
+          "activity4Data.2.outcome": outcome,
+        });
+      break;
+    }
     if (vibration!=""&&outcome!=""&&vibration!=null&&outcome!=null) {
         global.activity4Complete[global.activity4DataIndex] = true;
+        switch (global.activity1DataIndex) {
+          case 0:
+            updateDoc(teamRef, {
+              "activity4Complete.0": true,
+            });
+          break;
+          case 1:
+            updateDoc(teamRef, {
+              "activity4Complete.1": true,
+            });
+          break;
+          case 2:
+            updateDoc(teamRef, {
+              "activity4Complete.2": true,
+            });
+          break;
+      }
     }
     else {
         global.activity4Complete[global.activity4DataIndex] = false;
+        switch (global.activity1DataIndex) {
+          case 0:
+            updateDoc(teamRef, {
+              "activity4Complete.0": false,
+            });
+          break;
+          case 1:
+            updateDoc(teamRef, {
+              "activity4Complete.1": false,
+            });
+          break;
+          case 2:
+            updateDoc(teamRef, {
+              "activity4Complete.2": false,
+            });
+          break;
     }
-    router.push("/activity4.5")
   }
-
+  router.push("/activity4.5")
+}
   return (
+    
     <View style={[styles.container,
       {
           backgroundColor: darkMode ? '#111' : '#fff',

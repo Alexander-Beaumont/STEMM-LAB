@@ -7,6 +7,9 @@ declare global {
     var activity4DataIndex: number;
     var activity4Data: Object[];
     var activity4Reflection: String;
+    var activity6Reflection: String;
+    var activity7Reflection: String;
+    var team: String;
 }
 
 
