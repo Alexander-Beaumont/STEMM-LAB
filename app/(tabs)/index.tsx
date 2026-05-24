@@ -131,7 +131,7 @@ export default function HomeScreen() {
       setFeedback("Wrong Password");
       setCanContinue(false)
     }
-    //checkDataUpload()
+    checkDataUpload()
   };
   async function checkDataUpload() {
     const ref = collection(db, "Teams");
@@ -296,8 +296,8 @@ export default function HomeScreen() {
       </View>
 
       <TouchableOpacity style={[styles.smallButton,
-      {backgroundColor: darkMode ? '#111' : '#fff'}]} onPress={addItem}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Add Team member</Text>
+      {backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={addItem}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Add Team member</Text>
       </TouchableOpacity>
 
       {continueCode}
