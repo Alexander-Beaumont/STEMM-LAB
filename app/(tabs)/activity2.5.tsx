@@ -51,7 +51,7 @@ export default function Activity2() {
       ]}>STEMM LAB APP</Text>
       <Text style={[styles.title,
         {color: darkMode ? '#fff' : '#111'}
-      ]}>Sound Polution</Text>
+      ]}>Sound Pollution</Text>
     
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,

@@ -9,7 +9,6 @@ export default function Activity1() {
     activity.removeContinue()
     let currentActivity = global.activity1Data[global.activity1DataIndex] as any;
     activity.addDecorator(new PlayerDecorator(currentActivity.video[0].uri))
-    console.log(currentActivity.video)
 
     return (
         activity.getScreenCode()

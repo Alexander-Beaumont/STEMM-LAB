@@ -2,26 +2,144 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+import firebase from 'firebase/compat/app';
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";
+
+
+
 
 export default function Activity1() {
   
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
+  const [hasRun, setHasRun] = useState(false);
   let currentActivity = global.activity1Data[global.activity1DataIndex] as any;
+  const db = firebase.firestore();
+
   const [time, setTime] = useState(currentActivity.time);
   const [mass, setMass] = useState(currentActivity.mass);
   const [height, setHeight] = useState(currentActivity.height);
   const [accuracy, setAccuracy] = useState(currentActivity.accuracy);
+  
+  if (!hasRun) {
+    async () => {
+      const teamsRef = collection(db, "Teams");
 
-  function inputData() {
+      const q = query(teamsRef, where("team", "==", global.team.trim()));
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        currentActivity.time = doc.data().activity1Data[global.activity1DataIndex].time
+        currentActivity.mass = doc.data().activity1Data[global.activity1DataIndex].mass
+        currentActivity.height = doc.data().activity1Data[global.activity1DataIndex].height
+        currentActivity.accuracy = doc.data().activity1Data[global.activity1DataIndex].accuracy
+        currentActivity.video = doc.data().activity1Data[global.activity1DataIndex].video
+        setTime(currentActivity.time)
+        setMass(currentActivity.mass)
+        setHeight(currentActivity.height)
+        setAccuracy(currentActivity.accuracy)
+      });
+    }
+    setHasRun(true);
+  }
+  
+  
+
+  async function inputData() {
     currentActivity.time = time;
     currentActivity.mass = mass;
     currentActivity.height = height;
     currentActivity.accuracy = accuracy;
+
+    const teamRef = doc(db, 'Teams', global.team.trim());
+    switch (global.activity1DataIndex) {
+      case 0:
+        await updateDoc(teamRef, {
+          "activity1Data.0.time": time,
+          "activity1Data.0.mass": mass,
+          "activity1Data.0.height": height,
+          "activity1Data.0.accuracy": accuracy,
+          "activity1Data.0.video": currentActivity.video,
+        });
+      break;
+      case 1:
+        await updateDoc(teamRef, {
+          "activity1Data.1.time": time,
+          "activity1Data.1.mass": mass,
+          "activity1Data.1.height": height,
+          "activity1Data.1.accuracy": accuracy,
+          "activity1Data.1.video": currentActivity.video,
+        });
+      break;
+      case 2:
+        await updateDoc(teamRef, {
+          "activity1Data.2.time": time,
+          "activity1Data.2.mass": mass,
+          "activity1Data.2.height": height,
+          "activity1Data.2.accuracy": accuracy,
+          "activity1Data.2.video": currentActivity.video,
+        });
+      break;
+      case 3:
+        await updateDoc(teamRef, {
+          "activity1Data.3.time": time,
+          "activity1Data.3.mass": mass,
+          "activity1Data.3.height": height,
+          "activity1Data.3.accuracy": accuracy,
+          "activity1Data.3.video": currentActivity.video,
+        });
+      break;
+    }
+
+
     if (time!=""&&mass!=""&&height!=""&&accuracy!=""&&time!=null&&mass!=null&&height!=null&&accuracy!=null) {
-        global.activity1Complete[global.activity1DataIndex] = true;
+      global.activity1Complete[global.activity1DataIndex] = true;
+      switch (global.activity1DataIndex) {
+        case 0:
+          await updateDoc(teamRef, {
+            "activity1Complete.0": true,
+          });
+        break;
+        case 1:
+          await updateDoc(teamRef, {
+            "activity1Complete.1": true,
+          });
+        break;
+        case 2:
+          await updateDoc(teamRef, {
+            "activity1Complete.2": true,
+          });
+        break;
+        case 3:
+          await updateDoc(teamRef, {
+            "activity1Complete.3": true,
+          });
+        break;
+      }
     }
     else {
         global.activity1Complete[global.activity1DataIndex] = false;
+        switch (global.activity1DataIndex) {
+        case 0:
+          await updateDoc(teamRef, {
+            "activity1Complete.0": false,
+          });
+        break;
+        case 1:
+          await updateDoc(teamRef, {
+            "activity1Complete.1": false,
+          });
+        break;
+        case 2:
+          await updateDoc(teamRef, {
+            "activity1Complete.2": false,
+          });
+        break;
+        case 3:
+          await updateDoc(teamRef, {
+            "activity1Complete.3": false,
+          });
+        break;
+      }
     }
     router.push("/activity1.5")
   }

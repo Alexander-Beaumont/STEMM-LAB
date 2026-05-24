@@ -2,27 +2,104 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+import { GyroscopeMeter } from '../gyroscope.js';
+
+import firebase from 'firebase/compat/app';
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";
 
 export default function Activity4() {
-  
+  const [hasRun, setHasRun] = useState(false);
+    const db = firebase.firestore();
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   let currentActivity = global.activity4Data[global.activity4DataIndex] as any;
   const [vibration, setVibration] = useState(currentActivity.vibration);
   const [outcome, setOutcome] = useState(currentActivity.outcome);
+  
+  if (!hasRun) {
+    async () => {
+      const teamsRef = collection(db, "Teams");
+
+      const q = query(teamsRef, where("team", "==", global.team.trim()));
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        currentActivity.vibration = doc.data().activity4Data[global.activity4DataIndex].vibration
+        currentActivity.outcome = doc.data().activity4Data[global.activity4DataIndex].outcome
+        setVibration(currentActivity.vibration)
+        setOutcome(currentActivity.outcome)
+      });
+    }
+    setHasRun(true);
+  }
 
   function inputData() {
     currentActivity.vibration = vibration;
     currentActivity.outcome = outcome;
+    const teamRef = doc(db, 'Teams', global.team.trim());
+    switch (global.activity4DataIndex) {
+      case 0:
+        updateDoc(teamRef, {
+          "activity4Data.0.vibration": vibration,
+          "activity4Data.0.outcome": outcome,
+        });
+      break;
+      case 1:
+        updateDoc(teamRef, {
+          "activity4Data.1.vibration": vibration,
+          "activity4Data.1.outcome": outcome,
+        });
+      break;
+      case 2:
+        updateDoc(teamRef, {
+          "activity4Data.2.vibration": vibration,
+          "activity4Data.2.outcome": outcome,
+        });
+      break;
+    }
     if (vibration!=""&&outcome!=""&&vibration!=null&&outcome!=null) {
         global.activity4Complete[global.activity4DataIndex] = true;
+        switch (global.activity1DataIndex) {
+          case 0:
+            updateDoc(teamRef, {
+              "activity4Complete.0": true,
+            });
+          break;
+          case 1:
+            updateDoc(teamRef, {
+              "activity4Complete.1": true,
+            });
+          break;
+          case 2:
+            updateDoc(teamRef, {
+              "activity4Complete.2": true,
+            });
+          break;
+      }
     }
     else {
         global.activity4Complete[global.activity4DataIndex] = false;
+        switch (global.activity1DataIndex) {
+          case 0:
+            updateDoc(teamRef, {
+              "activity4Complete.0": false,
+            });
+          break;
+          case 1:
+            updateDoc(teamRef, {
+              "activity4Complete.1": false,
+            });
+          break;
+          case 2:
+            updateDoc(teamRef, {
+              "activity4Complete.2": false,
+            });
+          break;
     }
-    router.push("/activity4.5")
   }
-
+  router.push("/activity4.5")
+}
   return (
+    
     <View style={[styles.container,
       {
           backgroundColor: darkMode ? '#111' : '#fff',
@@ -50,23 +127,31 @@ export default function Activity4() {
         <Text style={[styles.title,
             {color: darkMode ? '#fff' : '#111'}
         ]}>Earthquake Resistant Structure</Text>
-        
+
+      <GyroscopeMeter
+        onGyroscopeChange={(data: any) => {
+          if (!data.isFinal) return;
+
+          setVibration(data.measuredVibration);
+        }}
+      />
+      
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Measured Vibration</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Final Average</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',
                   color: darkMode ? '#444' : '#fff',}
                 ]}
                   placeholderTextColor={darkMode ? '#444' : '#ddd'}
-                  placeholder="Vibration" value={vibration} onChangeText={(e) => setVibration(e)} />
+                  placeholder="Vibration" value={vibration} editable={false} />
       </View>
       <View style={styles.box}>
         <View style={[styles.optionButton,
         {backgroundColor: darkMode ? '#ddd' : '#444'}]}>
-            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Outcome</Text>
+            <Text style={[styles.buttonText,{color: darkMode ? '#000' : '#fff'}]}>Were you right?</Text>
         </View>
         <TextInput style={[styles.input,
                   {backgroundColor: darkMode ? '#bbb' : '#666',
@@ -114,14 +199,14 @@ export default function Activity4() {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 14,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   icon: {
     fontSize: 22,
   },
   title: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
     marginBottom: 10,
   },

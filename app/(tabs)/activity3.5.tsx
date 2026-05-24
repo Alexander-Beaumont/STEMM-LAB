@@ -3,6 +3,9 @@ import { Checkbox } from 'expo-checkbox';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+import firebase from 'firebase/compat/app';
+import { doc, setDoc } from "firebase/firestore"; 
+import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";
 declare global {
     var activity3Data: Object;
     var activity3Reflection: string;
@@ -10,9 +13,10 @@ declare global {
 
 
 export default function Activity1() {
-  
+  const [hasRun, setHasRun] = useState(false);
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   let currentActivity = global.activity3Data as any;
+  const db = firebase.firestore();
   const [material1, setMaterial1] = useState(currentActivity.material1);
   const [material2, setMaterial2] = useState(currentActivity.material2);
   const [material3, setMaterial3] = useState(currentActivity.material3);
@@ -25,6 +29,41 @@ export default function Activity1() {
   const [isChecked2, setChecked2] = useState(currentActivity.checkbox2);
   const [isChecked3, setChecked3] = useState(currentActivity.checkbox3);
   const [isChecked4, setChecked4] = useState(currentActivity.checkbox4);
+  if (!hasRun) {
+    async () => {
+      const teamsRef = collection(db, "Teams");
+
+      const q = query(teamsRef, where("team", "==", global.team.trim()));
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        currentActivity.material1 = doc.data().activity3Data.material1
+        currentActivity.material2 = doc.data().activity3Data.material2
+        currentActivity.material3 = doc.data().activity3Data.material3
+        currentActivity.material4 = doc.data().activity3Data.material4
+        currentActivity.bend1 = doc.data().activity3Data.bend1
+        currentActivity.bend2 = doc.data().activity3Data.bend2
+        currentActivity.bend3 = doc.data().activity3Data.bend3
+        currentActivity.bend4 = doc.data().activity3Data.bend4
+        currentActivity.isChecked1 = doc.data().activity3Data.checkbox1
+        currentActivity.isChecked2 = doc.data().activity3Data.checkbox2
+        currentActivity.isChecked3 = doc.data().activity3Data.checkbox3
+        currentActivity.isChecked4 = doc.data().activity3Data.checkbox4
+        setMaterial1(currentActivity.material1)
+        setMaterial2(currentActivity.material2)
+        setMaterial3(currentActivity.material3)
+        setMaterial4(currentActivity.material4)
+        setBend1(currentActivity.bend1)
+        setBend2(currentActivity.bend2)
+        setBend3(currentActivity.bend3)
+        setBend4(currentActivity.bend4)
+        setChecked1(currentActivity.checkbox1)
+        setChecked2(currentActivity.checkbox2)
+        setChecked3(currentActivity.checkbox3)
+        setChecked4(currentActivity.checkbox4)
+      });
+    }
+    setHasRun(true);
+  }
 
   function inputData(page: number) {
     currentActivity.material1 = material1;
@@ -39,6 +78,22 @@ export default function Activity1() {
     currentActivity.checkbox2 = isChecked2;
     currentActivity.checkbox3 = isChecked3;
     currentActivity.checkbox4 = isChecked4;
+
+    const teamRef = doc(db, 'Teams', global.team.trim());
+    updateDoc(teamRef, {
+        "activity3Data.material1": currentActivity.material1,
+        "activity3Data.material2": currentActivity.material2,
+        "activity3Data.material3": currentActivity.material3,
+        "activity3Data.material4": currentActivity.material4,
+        "activity3Data.bend1": currentActivity.bend1,
+        "activity3Data.bend2": currentActivity.bend2,
+        "activity3Data.bend3": currentActivity.bend3,
+        "activity3Data.bend4": currentActivity.bend4,
+        "activity3Data.checkbox1": currentActivity.checkbox1,
+        "activity3Data.checkbox2": currentActivity.checkbox2,
+        "activity3Data.checkbox3": currentActivity.checkbox3,
+        "activity3Data.checkbox4": currentActivity.checkbox4,
+      });
     if (page==1) {
         router.push("/activity3.6")
     }

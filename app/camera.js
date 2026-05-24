@@ -8,7 +8,7 @@ import "./global.js"
 export default class Camera {
     constructor() {
         this.goTo = '/';
-        this.saveVar = global.videos;
+        this.saveVar = '';
     }
     setSaveVar(save) {
         this.saveVar = save;

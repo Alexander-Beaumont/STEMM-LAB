@@ -5,7 +5,7 @@ import Screen from '../screen.js';
 
 export default function Activity2() {
     let activity = new Screen();
-    activity.setTitle("Sound Polution")
+    activity.setTitle("Sound Pollution")
     activity.setText("Diagram:")
     activity.setButtonLink('/activity2.5')
     const imgRef = require("@/assets/images/diagram2.png")

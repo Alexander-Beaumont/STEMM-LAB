@@ -1,15 +1,14 @@
+global.team
 global.darkmodeEnabled = true;
-global.videos = [];
-global.activity1Complete = [false,false,false,false];
-global.activity4Complete = [false,false,false];
-global.activity1DataIndex;
-global.activity4DataIndex;
-global.activity1Data = [
-    {time:null,mass:null,height:null,accuracy:null,video:[]},
-    {time:null,mass:null,height:null,accuracy:null,video:[]},
-    {time:null,mass:null,height:null,accuracy:null,video:[]},
-    {time:null,mass:null,height:null,accuracy:null,video:[]}
-]
+global.activity1Complete = {0:false,1:false,2:false,3:false};
+global.activity4Complete = {0:false,1:false,2:false};
+
+global.activity1Data = {
+    0:{time:null,mass:null,height:null,accuracy:null,video:[]},
+    1:{time:null,mass:null,height:null,accuracy:null,video:[]},
+    2:{time:null,mass:null,height:null,accuracy:null,video:[]},
+    3:{time:null,mass:null,height:null,accuracy:null,video:[]}
+}
 global.activity3Data = {
     material1:'',
     material2:'',
@@ -24,21 +23,27 @@ global.activity3Data = {
     checkbox3:false,
     checkbox4:false,
 }
-global.activity4Data = [
-    {vibration:null,outcome:null},
-    {vibration:null,outcome:null},
-    {vibration:null,outcome:null}
-]
-global.activity1Reflection = '';
-global.activity2Reflection = '';
-global.activity3Reflection = '';
-global.activity4Reflection = '';
+global.activity4Data = {
+    0:{vibration:null,outcome:null},
+    1:{vibration:null,outcome:null},
+    2:{vibration:null,outcome:null}
+}
 
-export const activity5Results = {
+global.activity5Results = {
   movement1: 'Not Started',
   movement2: 'Not Started',
   movement3: 'Not Started',
 };
+global.activity1DataIndex;
+global.activity4DataIndex;
+global.activity1Reflection = '';
+global.activity2Reflection = '';
+global.activity3Reflection = '';
+global.activity4Reflection = '';
+global.activity5Reflection = '';
+global.activity6Reflection = '';
+global.activity7Reflection = '';
+
 export default function HiddenRoute() {
   return null;
 }
