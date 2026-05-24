@@ -141,7 +141,7 @@ export default class Screen {
                 console.log("confirmKeysUnique: Fail")
             }
         }
-        //confirmKeysUnique()
+        confirmKeysUnique()
         return (
             <View style={[styles.container,
               {

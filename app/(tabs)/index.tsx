@@ -269,25 +269,25 @@ export default function HomeScreen() {
       ]}>STEMM LAB APP</Text>
       {feedbackCode}
       <View style={styles.form}>
-        <TextInput style={[styles.input,
+        <TextInput testID="name" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777',}
         ]} value={name} onChangeText={(e) => setName(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
           placeholder="Name:" />
-        <TextInput style={[styles.input,
+        <TextInput testID="grade" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]}  value={grade} onChangeText={(e) => setGrade(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
           placeholder="Grade:" />
-        <TextInput style={[styles.input,
+        <TextInput testID="team" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={team} onChangeText={(e) => setTeam(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
           placeholder="Team Name:" />
-          <TextInput style={[styles.input,
+          <TextInput testID="password" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={password} onChangeText={(e) => setPassword(e)}
