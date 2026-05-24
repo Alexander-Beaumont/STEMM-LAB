@@ -66,13 +66,12 @@ export default function HomeScreen() {
   const [canContinue, setCanContinue] = useState(false);
   
   const [feedback, setFeedback] = useState("");
-  const [grade, setGrade] = useState("Placeholder Grade");
-  const [name, setName] = useState("Placeholder Name");
-  const [team, setTeam] = useState("Placeholder Team");
-  const [password, setPassword] = useState("Placeholder Password");
+  const [grade, setGrade] = useState("");
+  const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
+  const [password, setPassword] = useState("");
   const  addItem = async () => {
     const citiesRef = collection(db, "Teams");
-
     // Create a query against the collection.
     const q = query(citiesRef, where("team", "==", team.trim()));
     const querySnapshot = await getDocs(q)

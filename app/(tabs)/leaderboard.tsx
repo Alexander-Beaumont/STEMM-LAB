@@ -8,6 +8,7 @@ import { collection, query, where, getDocs, updateDoc  } from "firebase/firestor
 export default function HomeScreen() {
   const [darkMode, setDarkMode] = useState(global.darkmodeEnabled);
   const [hasRun, setHasRun] = useState(false);
+  const [myPoints, setMyPoints] = useState(0);
   const [rankings, setRankings] = useState([<View key={0} />]);
   const db = firebase.firestore();
   async function getScores() {
@@ -99,10 +100,14 @@ export default function HomeScreen() {
       }
       
       data.push({
-      "teamName" : doc.data().team,
-      "score" : score
-    })
+        "teamName" : doc.data().team,
+        "score" : score
+      })
+      if (doc.data().team == global.team) {
+        setMyPoints(score)
+      }
     });
+
     return data;
   }
   const displayRankings = async () => {
@@ -160,7 +165,9 @@ export default function HomeScreen() {
       <Text style={[styles.title,
         {color: darkMode ? '#fff' : '#111'}
       ]}>STEMM LAB APP</Text>
-
+      {<Text style={[styles.buttonText,
+        {color: darkMode ? '#fff' : '#111', marginBottom:20}
+      ]}>Your Points: {myPoints}</Text>}
       {rankings}
 
     </View>
@@ -186,7 +193,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   leaderboardItem: {
     textAlign: 'center',
