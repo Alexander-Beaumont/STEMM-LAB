@@ -128,8 +128,20 @@ export default class Screen {
         for (let i=0;i<this.decorators.length;i++) {
             compiledDecorators.push(React.cloneElement(this.decorators[i].getCode(), { key:compiledDecorators.length}));
         }
-
-        
+        function confirmKeysUnique() {
+            let keys = []
+            for (let i=0; i<compiledDecorators.length;i++) {
+                keys.push(compiledDecorators.key)
+            }
+            const uniqueArray = [...new Set(keys)];
+            if (uniqueArray.length==compiledDecorators.length) {
+                console.log("confirmKeysUnique: Pass")
+            }
+            else {
+                console.log("confirmKeysUnique: Fail")
+            }
+        }
+        //confirmKeysUnique()
         return (
             <View style={[styles.container,
               {

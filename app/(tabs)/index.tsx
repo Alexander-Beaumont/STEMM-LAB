@@ -64,6 +64,9 @@ export default function HomeScreen() {
 
   const db = firebase.firestore();
   const [canContinue, setCanContinue] = useState(false);
+  const [hasRun, setHasRun] = useState(0);
+  const [hasRun2, setHasRun2] = useState(0);
+  const [hasRun3, setHasRun3] = useState(0);
   
   const [feedback, setFeedback] = useState("");
   const [grade, setGrade] = useState("");
@@ -93,7 +96,11 @@ export default function HomeScreen() {
       global.activity7Reflection = doc.data().activity7Reflection
       global.activity5Results = doc.data().activity5Results
     });
-    if (password == savedPassword || savedPassword == "") {
+    if (name==""||grade==""||team==""||password=="") {
+      setFeedback("All fields must be filled.");
+      setCanContinue(false)
+    }
+    else if (password == savedPassword || savedPassword == "") {
       db.collection('Teams').doc(team.trim()).update({
           members: firebase.firestore.FieldValue.arrayUnion({name:name.trim(), grade : grade.trim() })
       }).catch(error => {
@@ -122,23 +129,106 @@ export default function HomeScreen() {
     }
     else {
       setFeedback("Wrong Password");
+      setCanContinue(false)
     }
-    
+    //checkDataUpload()
   };
-  async function testSubmitWorks() {
-    setName("Placeholder Child")
-    setGrade("4")
-    setTeam("Team Boring")
-    setPassword("yes")
-    await addItem()
-    if (canContinue) {
-      console.log("Test 1 Passes")
+  async function checkDataUpload() {
+    const ref = collection(db, "Teams");
+    // Create a query against the collection.
+    const q = query(ref, where("team", "==", team.trim()));
+    const querySnapshot = await getDocs(q)
+    let savedPassword = "";
+    querySnapshot.forEach((doc) => {
+      savedPassword = doc.data().password
+    });
+    if (savedPassword==""){
+      console.log("checkDataUpload: Fail")
     }
     else {
-      console.error("Test 1 Fails")
+      console.log("checkDataUpload: Pass")
     }
   }
-  testSubmitWorks()
+  async function testSubmitWorks() {
+    if (hasRun==0) {
+      setName("Placeholder Child")
+      setGrade("4")
+      setTeam("Team Boring")
+      setPassword("yes")
+      setHasRun(1)
+    }
+    else if (hasRun==1) {
+      await addItem()
+      setHasRun(2)
+    }
+    else if (hasRun==2) {
+      if (canContinue) {
+        console.log("testSubmitWorks: Pass")
+      }
+      else {
+        console.log("testSubmitWorks: Fail")
+      }
+      setHasRun(3)
+    }
+  }
+  async function checkPasswordCatching() {
+    if (hasRun2==0) {
+      setName("Placeholder Child")
+      setGrade("4")
+      setTeam("Team Boring")
+      setPassword("no")
+      setHasRun2(1)
+    }
+    else if (hasRun2==1) {
+      await addItem()
+      setHasRun2(2)
+    }
+    else if (hasRun2==2) {
+      if (!canContinue) {
+        console.log("checkPasswordCatching: Pass")
+      }
+      else {
+        console.log("checkPasswordCatching: Fail")
+      }
+      setHasRun2(3)
+      setHasRun(4)
+    }
+  }
+  async function checkMissingFieldCatching() {
+    if (hasRun3==0) {
+      setName("Placeholder Child")
+      setGrade("")
+      setTeam("Team Boring")
+      setPassword("no")
+      setHasRun3(1)
+    }
+    else if (hasRun3==1) {
+      await addItem()
+      setHasRun3(2)
+    }
+    else if (hasRun3==2) {
+      if (!canContinue) {
+        console.log("checkMissingFieldCatching: Pass")
+      }
+      else {
+        console.log("checkMissingFieldCatching: Fail")
+      }
+      setHasRun3(3)
+      setHasRun2(4)
+    }
+  }
+  function runTests() {
+    if (hasRun<3) {
+      testSubmitWorks()
+    }
+    if (hasRun==3) {
+      checkPasswordCatching()
+    }
+    if (hasRun2==3) {
+      checkMissingFieldCatching()
+    }
+  }
+  //runTests()
   const [darkMode, setDarkMode] = useState(false);
   if (darkMode!=global.darkmodeEnabled) {
     setDarkMode(global.darkmodeEnabled);
