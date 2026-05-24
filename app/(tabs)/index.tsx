@@ -125,7 +125,20 @@ export default function HomeScreen() {
     }
     
   };
-    
+  async function testSubmitWorks() {
+    setName("Placeholder Child")
+    setGrade("4")
+    setTeam("Team Boring")
+    setPassword("yes")
+    await addItem()
+    if (canContinue) {
+      console.log("Test 1 Passes")
+    }
+    else {
+      console.error("Test 1 Fails")
+    }
+  }
+  testSubmitWorks()
   const [darkMode, setDarkMode] = useState(false);
   if (darkMode!=global.darkmodeEnabled) {
     setDarkMode(global.darkmodeEnabled);
@@ -177,19 +190,19 @@ export default function HomeScreen() {
           color: darkMode ? '#fff' : '#777'}
         ]}  value={grade} onChangeText={(e) => setGrade(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Grade" />
+          placeholder="Grade:" />
         <TextInput style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={team} onChangeText={(e) => setTeam(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Team name" />
+          placeholder="Team Name:" />
           <TextInput style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={password} onChangeText={(e) => setPassword(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Password" />
+          placeholder="Password:" />
       </View>
 
       <TouchableOpacity style={[styles.smallButton,
