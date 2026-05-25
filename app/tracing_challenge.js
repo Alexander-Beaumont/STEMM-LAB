@@ -93,6 +93,10 @@ export default function TracingChallenge({ onResult }) {
     const touchX = touch.locationX;
     const touchY = touch.locationY;
 
+    if (touchX <= 15 || touchY <= 15 || touchX >= 260 || touchY >= 160) {
+    return;
+    }
+
     setFingerX(touchX);
     setFingerY(touchY);
 
@@ -109,11 +113,27 @@ export default function TracingChallenge({ onResult }) {
     accuracyRef.current = roundedAccuracy;
   }}
 >
-        <View style={[styles.target, { left: targetX, top: targetY }]} />
+        <View
+  pointerEvents="none"
+  style={[styles.target, { left: targetX, top: targetY }]}
+/>
 
-        {fingerX !== null && fingerY !== null && (
-          <View style={[styles.fingerMarker, { left: fingerX, top: fingerY }]} />
-        )}
+{fingerX !== null &&
+  fingerY !== null &&
+  fingerX > 15 &&
+  fingerY > 15 &&
+  fingerX < 260 &&
+  fingerY < 160 && (
+    <View
+      style={[
+        styles.fingerMarker,
+        {
+          left: fingerX - 10,
+          top: fingerY - 10,
+        },
+      ]}
+    />
+)}
       </View>
 
       <TouchableOpacity style={styles.button} onPress={startChallenge}>
