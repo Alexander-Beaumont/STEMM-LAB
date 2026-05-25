@@ -1,4 +1,5 @@
 global.team
+global.highest = 0;
 global.darkmodeEnabled = true;
 global.activity1Complete = {0:false,1:false,2:false,3:false};
 global.activity4Complete = {0:false,1:false,2:false};
@@ -8,6 +9,13 @@ global.activity1Data = {
     1:{time:null,mass:null,height:null,accuracy:null,video:[]},
     2:{time:null,mass:null,height:null,accuracy:null,video:[]},
     3:{time:null,mass:null,height:null,accuracy:null,video:[]}
+}
+global.activity2Data = {
+    0:{volume:"0"},
+    1:{volume:"0"},
+    2:{volume:"0"},
+    3:{volume:"0"},
+    4:{volume:"0"}
 }
 global.activity3Data = {
     material1:'',

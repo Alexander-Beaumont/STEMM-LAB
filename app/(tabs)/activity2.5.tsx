@@ -5,6 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import "../global.js";
 declare global {
     var activity2DataIndex: number;
+    var activity2Data: Object;
     var activity2Reflection: String;
 }
 
@@ -12,6 +13,12 @@ declare global {
 export default function Activity2() {
   
   const [darkMode, setDarkMode] = useState(false);
+  let currentActivity = global.activity2Data as any;
+  const [volume1, setVolume1] = useState(currentActivity[0].volume);
+  const [volume2, setVolume2] = useState(currentActivity[1].volume);
+  const [volume3, setVolume3] = useState(currentActivity[2].volume);
+  const [volume4, setVolume4] = useState(currentActivity[3].volume);
+  const [volume5, setVolume5] = useState(currentActivity[4].volume);
   if (darkMode!=global.darkmodeEnabled) {
     setDarkMode(global.darkmodeEnabled);
   }
@@ -19,10 +26,6 @@ export default function Activity2() {
   function goToData(index: number) {
     global.activity2DataIndex = index;
     router.push('/activity2.6')
-  }
-    function goToMap(index: number) {
-    global.activity2DataIndex = index;
-    router.push('/activity2.7')
   }
   return (
     <View style={[styles.container,
@@ -58,50 +61,40 @@ export default function Activity2() {
         {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(0)}> 
             <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Measure Sound 1</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.statusbox,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToMap(0)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Show Location</Text>
-        </TouchableOpacity>
+        <Text style={[styles.statusbox,styles.buttonText,
+          {color: darkMode ? '#fff' : '#111',backgroundColor: darkMode ? '#444' : '#ddd'}]}>{volume1} dB</Text>
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
         {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(1)}>
             <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Measure Sound 2</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.statusbox,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToMap(1)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Show Location</Text>
-        </TouchableOpacity>
+        <Text style={[styles.statusbox,styles.buttonText,
+          {color: darkMode ? '#fff' : '#111',backgroundColor: darkMode ? '#444' : '#ddd'}]}>{volume2} dB</Text>
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
         {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(2)}>
             <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Measure Sound 3</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.statusbox,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToMap(2)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Show Location</Text>
-        </TouchableOpacity>
+        <Text style={[styles.statusbox,styles.buttonText,
+          {color: darkMode ? '#fff' : '#111',backgroundColor: darkMode ? '#444' : '#ddd'}]}>{volume3} dB</Text>
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
         {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(3)}>
             <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Measure Sound 4</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.statusbox,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToMap(3)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Show Location</Text>
-        </TouchableOpacity>
+        <Text style={[styles.statusbox,styles.buttonText,
+          {color: darkMode ? '#fff' : '#111',backgroundColor: darkMode ? '#444' : '#ddd'}]}>{volume4} dB</Text>
       </View>
       <View style={styles.box}>
         <TouchableOpacity style={[styles.optionButton,
         {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToData(4)}>
             <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Measure Sound 5</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.statusbox,
-        {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => goToMap(4)}> 
-            <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Show Location</Text>
-        </TouchableOpacity>
+        <Text style={[styles.statusbox,styles.buttonText,
+          {color: darkMode ? '#fff' : '#111',backgroundColor: darkMode ? '#444' : '#ddd'}]}>{volume5} dB</Text>
       </View>
 
         <TouchableOpacity
@@ -192,13 +185,13 @@ export default function Activity2() {
     paddingVertical: 14,
     borderRadius: 6,
     marginTop: 10,
-    width:"55%",
+    width:"65%",
   },
   statusbox:{
     paddingVertical: 14,
     borderRadius: 6,
     marginTop: 10,
-    width:"40%",
+    width:"30%",
     overflow: 'hidden',
   },
   buttonText: {

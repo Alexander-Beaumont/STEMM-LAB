@@ -18,6 +18,13 @@ let activity1Data = {
     2:{time:null,mass:null,height:null,accuracy:null,video:[]},
     3:{time:null,mass:null,height:null,accuracy:null,video:[]}
 }
+let activity2Data = {
+    0:{volume:"0"},
+    1:{volume:"0"},
+    2:{volume:"0"},
+    3:{volume:"0"},
+    4:{volume:"0"}
+}
 let activity3Data = {
     material1:'',
     material2:'',
@@ -85,6 +92,7 @@ export default function HomeScreen() {
       global.team = team
       global.activity4Complete = doc.data().activity4Complete
       global.activity1Data = doc.data().activity1Data
+      global.activity2Data = doc.data().activity2Data
       global.activity3Data = doc.data().activity3Data
       global.activity4Data = doc.data().activity4Data
       global.activity1Reflection = doc.data().activity1Reflection
@@ -111,6 +119,7 @@ export default function HomeScreen() {
           activity1Complete: activity1Complete,
           activity4Complete: activity4Complete,
           activity1Data: activity1Data,
+          activity2Data: activity2Data,
           activity3Data: activity3Data,
           activity4Data: activity4Data,
           activity1Reflection: '',
