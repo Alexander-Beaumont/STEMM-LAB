@@ -124,7 +124,7 @@ function saveResult(result: any) {
         <Text style={styles.buttonText}>
           {(global as any).activity6DataIndex < memberCount - 1
             ? 'Next Team Member'
-            : 'View Results'}
+            : 'Continue'}
         </Text>
       </TouchableOpacity>
 

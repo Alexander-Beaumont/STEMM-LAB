@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import "../global.js";
+
 declare global {
     var activity4Complete: boolean[];
     var activity4DataIndex: number;
@@ -25,6 +26,7 @@ export default function Activity4() {
     global.activity4DataIndex = index;
     router.push('/activity4.6')
   }
+
   let continueCode;
   if (attempt1Complete&&attempt2Complete&&attempt3Complete) {
     continueCode = (<TouchableOpacity
@@ -33,6 +35,7 @@ export default function Activity4() {
                     <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Continue</Text>
                   </TouchableOpacity>)
   }
+  
   return (
     <View style={[styles.container,
       {

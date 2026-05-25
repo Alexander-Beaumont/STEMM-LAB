@@ -79,9 +79,8 @@ export default function HomeScreen() {
     querySnapshot.forEach((doc) => {
       savedPassword = doc.data().password
       global.activity1Complete = doc.data().activity1Complete;
-      (global as any).team = team.trim(); //temp
-      (global as any).members = doc.data().members; //temp
-      (global as any).activity6Data = doc.data().activity6Data;
+      global.team = team.trim();
+      global.members = doc.data().members;
       global.activity4Complete = doc.data().activity4Complete
       global.activity1Data = doc.data().activity1Data
       global.activity3Data = doc.data().activity3Data
@@ -97,7 +96,7 @@ export default function HomeScreen() {
     });
     if (password == savedPassword || savedPassword == "") {
       db.collection('Teams').doc(team.trim()).update({
-          members: firebase.firestore.FieldValue.arrayUnion({name:name.trim(), grade : grade.trim() })
+          members: firebase.firestore.FieldValue.arrayUnion({name:name.trim(), grade : grade.trim(), activity6Data: { attempt1: null, attempt2: null, attempt3: null } })
       }).catch(error => {
         const teamRef = doc(db, 'Teams', team.trim());
         setDoc(teamRef, { 
@@ -116,12 +115,8 @@ export default function HomeScreen() {
           activity6Reflection: '',
           activity7Reflection: '',
           activity5Results: activity5Results,
-          members: [{name:name.trim(), grade : grade.trim() }],
-          activity6Data: {
-          0: { attempt1: null, attempt2: null, attempt3: null },
-          1: { attempt1: null, attempt2: null, attempt3: null },
-          2: { attempt1: null, attempt2: null, attempt3: null },
-        },
+          members: [{name:name.trim(), grade : grade.trim(), activity6Data: { attempt1: null, attempt2: null, attempt3: null }}],
+          
         });
       });
       setFeedback("");
@@ -130,7 +125,24 @@ export default function HomeScreen() {
     else {
       setFeedback("Wrong Password");
     }
-    
+    querySnapshot.forEach((doc) => {
+      savedPassword = doc.data().password
+      global.activity1Complete = doc.data().activity1Complete;
+      global.team = team.trim();
+      global.members = doc.data().members;
+      global.activity4Complete = doc.data().activity4Complete
+      global.activity1Data = doc.data().activity1Data
+      global.activity3Data = doc.data().activity3Data
+      global.activity4Data = doc.data().activity4Data
+      global.activity1Reflection = doc.data().activity1Reflection
+      global.activity2Reflection = doc.data().activity2Reflection
+      global.activity3Reflection = doc.data().activity3Reflection
+      global.activity4Reflection = doc.data().activity4Reflection
+      global.activity5Reflection = doc.data().activity5Reflection
+      global.activity6Reflection = doc.data().activity6Reflection
+      global.activity7Reflection = doc.data().activity7Reflection
+      global.activity5Results = doc.data().activity5Results
+    });
   };
     
   const [darkMode, setDarkMode] = useState(false);

@@ -39,11 +39,5 @@ export const activity5Results = {
   movement2: 'Not Started',
   movement3: 'Not Started',
 };
-
+global.members = []
 global.activity6DataIndex = 0;
-
-global.activity6Data = {
-  0: { attempt1: null, attempt2: null, attempt3: null },
-  1: { attempt1: null, attempt2: null, attempt3: null },
-  2: { attempt1: null, attempt2: null, attempt3: null },
-};
