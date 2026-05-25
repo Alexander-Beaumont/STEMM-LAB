@@ -1,6 +1,8 @@
+global.darkmodeEnabled = true;
+global.activity1DataIndex;
+global.activity4DataIndex;
 global.team
 global.highest = 0;
-global.darkmodeEnabled = true;
 global.activity1Complete = {0:false,1:false,2:false,3:false};
 global.activity4Complete = {0:false,1:false,2:false};
 
@@ -42,6 +44,8 @@ global.activity5Results = {
   movement2: 'Not Started',
   movement3: 'Not Started',
 };
+global.members = []
+global.activity6DataIndex = 0;
 global.activity1DataIndex;
 global.activity4DataIndex;
 global.activity1Reflection = '';
