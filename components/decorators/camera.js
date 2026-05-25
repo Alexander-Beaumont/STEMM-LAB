@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, Button, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
-import "../components/global.js"
+import "./global.js"
 
 
 export default class Camera {
