@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { PanResponder, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TracingChallenge({ onResult }) {
   const [started, setStarted] = useState(false);
@@ -18,32 +18,7 @@ export default function TracingChallenge({ onResult }) {
 
   const totalDistance = 260;
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => started && !finished,
-      onMoveShouldSetPanResponder: () => started && !finished,
 
-      onPanResponderMove: (event) => {
-        const touchX = event.nativeEvent.locationX;
-        const touchY = event.nativeEvent.locationY;
-
-        setFingerX(touchX);
-        setFingerY(touchY);
-
-        const xDistance = touchX - targetXRef.current;
-        const yDistance = touchY - targetYRef.current;
-
-        const distanceFromTarget = Math.sqrt(
-          xDistance * xDistance + yDistance * yDistance
-        );
-
-        const roundedAccuracy = distanceFromTarget.toFixed(1);
-
-        setAccuracy(roundedAccuracy);
-        accuracyRef.current = roundedAccuracy;
-      },
-    })
-  ).current;
 
     function finishChallenge() {
     if (finished) return;
@@ -108,7 +83,32 @@ export default function TracingChallenge({ onResult }) {
     <View style={styles.container}>
       <Text style={styles.title}>Tracing Challenge</Text>
 
-      <View style={styles.traceArea} {...panResponder.panHandlers}>
+      <View
+  style={styles.traceArea}
+  onTouchMove={(event) => {
+    const touch = event.nativeEvent.touches[0];
+
+    if (!touch || finished || !started) return;
+
+    const touchX = touch.locationX;
+    const touchY = touch.locationY;
+
+    setFingerX(touchX);
+    setFingerY(touchY);
+
+    const xDistance = touchX - targetXRef.current;
+    const yDistance = touchY - targetYRef.current;
+
+    const distanceFromTarget = Math.sqrt(
+      xDistance * xDistance + yDistance * yDistance
+    );
+
+    const roundedAccuracy = distanceFromTarget.toFixed(1);
+
+    setAccuracy(roundedAccuracy);
+    accuracyRef.current = roundedAccuracy;
+  }}
+>
         <View style={[styles.target, { left: targetX, top: targetY }]} />
 
         {fingerX !== null && fingerY !== null && (
