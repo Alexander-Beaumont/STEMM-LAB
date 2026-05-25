@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Decorator from './decorator.js';
+import Decorator from '../app/decorator.js';
 import firebase from 'firebase/compat/app';
 import { doc, updateDoc } from "firebase/firestore"; 
 

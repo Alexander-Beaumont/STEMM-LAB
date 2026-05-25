@@ -1,6 +1,6 @@
 
-import Screen from '../screen.js';
-import { SoundMeter } from '../sound_decorator.js';
+import Screen from '../../components/decorators/screen.js';
+import { SoundMeter } from '../../components/decorators/sound_decorator.js';
   
 
 export default function Activity1() {

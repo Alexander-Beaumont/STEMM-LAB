@@ -1,6 +1,6 @@
 
-import Camera from '../camera.js';
-import Screen from '../screen.js';
+import Camera from '../../components/decorators/camera.js';
+import Screen from '../../components/decorators/screen.js';
   
 
 export default function Activity1() {

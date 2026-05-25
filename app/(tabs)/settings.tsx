@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import "../global.js";
+import "../../components/decorators/global.js";
 
 declare global {
     var darkmodeEnabled: boolean;

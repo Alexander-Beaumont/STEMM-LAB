@@ -2,7 +2,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import "../global.js";
+import "../../components/decorators/global.js";
 declare global {
     var activity2DataIndex: number;
     var activity2Data: Object;

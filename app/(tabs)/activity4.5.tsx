@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import "../global.js";
+import "../../components/decorators/global.js";
 declare global {
     var activity4Complete: boolean[];
     var activity4DataIndex: number;
