@@ -78,8 +78,10 @@ export default function HomeScreen() {
     let savedPassword = "";
     querySnapshot.forEach((doc) => {
       savedPassword = doc.data().password
-      global.activity1Complete = doc.data().activity1Complete
-      global.team = team
+      global.activity1Complete = doc.data().activity1Complete;
+      (global as any).team = team.trim(); //temp
+      (global as any).members = doc.data().members; //temp
+      (global as any).activity6Data = doc.data().activity6Data;
       global.activity4Complete = doc.data().activity4Complete
       global.activity1Data = doc.data().activity1Data
       global.activity3Data = doc.data().activity3Data
@@ -115,6 +117,11 @@ export default function HomeScreen() {
           activity7Reflection: '',
           activity5Results: activity5Results,
           members: [{name:name.trim(), grade : grade.trim() }],
+          activity6Data: {
+          0: { attempt1: null, attempt2: null, attempt3: null },
+          1: { attempt1: null, attempt2: null, attempt3: null },
+          2: { attempt1: null, attempt2: null, attempt3: null },
+        },
         });
       });
       setFeedback("");

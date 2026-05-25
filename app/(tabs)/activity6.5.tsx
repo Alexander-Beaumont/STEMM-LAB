@@ -1,46 +1,84 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import '../global.js';
 import ReactionTimer from '../reaction_timer';
 
-export default function Activity65() {
-  const [darkMode] = useState(global.darkmodeEnabled);
+export default function Activity6() {
+  const [darkMode] = useState((global as any).darkmodeEnabled);
 
-  const currentMemberData =
-    (global as any).activity6Data[(global as any).activity6DataIndex];
+  if (!(global as any).activity6Data) {
+    (global as any).activity6Data = {};
+  }
+
+  if ((global as any).activity6DataIndex === undefined) {
+    (global as any).activity6DataIndex = 0;
+  }
+
+  const currentIndex = (global as any).activity6DataIndex;
+
+  if (!(global as any).activity6Data[currentIndex]) {
+    (global as any).activity6Data[currentIndex] = {
+      attempt1: null,
+      attempt2: null,
+      attempt3: null,
+    };
+  }
+
+  const currentMemberData = (global as any).activity6Data[currentIndex];
 
   const [attempt1, setAttempt1] = useState(currentMemberData.attempt1);
-  const [attempt2, setAttempt2] = useState(currentMemberData.attempt2);
-  const [attempt3, setAttempt3] = useState(currentMemberData.attempt3);
+
+  useFocusEffect(
+    useCallback(() => {
+      const index = (global as any).activity6DataIndex;
+
+      if (!(global as any).activity6Data[index]) {
+        (global as any).activity6Data[index] = {
+          attempt1: null,
+          attempt2: null,
+          attempt3: null,
+        };
+      }
+
+      setAttempt1((global as any).activity6Data[index].attempt1);
+    }, [])
+  );
 
   function saveResult(result: number) {
-    if (attempt1 === null) {
-      (global as any).activity6Data[(global as any).activity6DataIndex].attempt1 = result;
-      setAttempt1(result);
+    const index = (global as any).activity6DataIndex;
+
+    if (!(global as any).activity6Data[index]) {
+      (global as any).activity6Data[index] = {
+        attempt1: null,
+        attempt2: null,
+        attempt3: null,
+      };
+    }
+
+    (global as any).activity6Data[index].attempt1 = result;
+    setAttempt1(result);
+  }
+
+  function goNext() {
+    const membersLength = (global as any).members?.length ?? 1;
+
+    if ((global as any).activity6DataIndex < membersLength - 1) {
+      (global as any).activity6DataIndex += 1;
+      router.replace('/activity6.5' as any);
       return;
     }
 
-    if (attempt2 === null) {
-      (global as any).activity6Data[(global as any).activity6DataIndex].attempt2 = result;
-      setAttempt2(result);
-      return;
-    }
-
-    (global as any).activity6Data[(global as any).activity6DataIndex].attempt3 = result;
-    setAttempt3(result);
+    (global as any).activity6DataIndex = 0;
+    router.push('/activity6.6' as any);
   }
 
-  function getAverage() {
-    const results = [attempt1, attempt2, attempt3].filter(
-      (value) => value !== null
-    );
+  const memberName =
+    (global as any).members?.[(global as any).activity6DataIndex]?.name ??
+    'Team member';
 
-    if (results.length === 0) return 'Not Started';
-
-    const total = results.reduce((sum, value) => sum + value, 0);
-    return `${Math.round(total / results.length)} ms`;
-  }
+  const memberCount = (global as any).members?.length ?? 1;
 
   return (
     <View
@@ -57,24 +95,41 @@ export default function Activity65() {
         Reaction Board Challenge
       </Text>
 
+      <Text style={[styles.phaseTitle, { color: darkMode ? '#fff' : '#111' }]}>
+        Phase 1: Dominant Hand
+      </Text>
+
+      <Text style={[styles.memberText, { color: darkMode ? '#fff' : '#111' }]}>
+        {memberName}
+      </Text>
+
+      <Text style={[styles.memberCount, { color: darkMode ? '#aaa' : '#555' }]}>
+        Team Member {(global as any).activity6DataIndex + 1} of {memberCount}
+      </Text>
+
       <Text style={[styles.description, { color: darkMode ? '#fff' : '#111' }]}>
-        Tap as quickly as possible when the button turns green. Complete three attempts.
+        Use your dominant hand. Tap as quickly as possible when the button turns green.
       </Text>
 
       <ReactionTimer onResult={saveResult} />
 
-      <View style={styles.resultsBox}>
-        <Text style={styles.resultText}>Attempt 1: {attempt1 ? `${attempt1} ms` : 'Not Started'}</Text>
-        <Text style={styles.resultText}>Attempt 2: {attempt2 ? `${attempt2} ms` : 'Not Started'}</Text>
-        <Text style={styles.resultText}>Attempt 3: {attempt3 ? `${attempt3} ms` : 'Not Started'}</Text>
-        <Text style={styles.averageText}>Average: {getAverage()}</Text>
+      <View
+        style={[
+          styles.resultsBox,
+          { backgroundColor: darkMode ? '#333' : '#f3f3f3' },
+        ]}
+      >
+        <Text style={[styles.resultText, { color: darkMode ? '#fff' : '#111' }]}>
+          Dominant hand result: {attempt1 ? `${attempt1} ms` : 'Not Started'}
+        </Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => router.push('/activity6.6' as any)}
-      >
-        <Text style={styles.buttonText}>Continue</Text>
+      <TouchableOpacity style={styles.continueButton} onPress={goNext}>
+        <Text style={styles.buttonText}>
+          {(global as any).activity6DataIndex < memberCount - 1
+            ? 'Next Team Member'
+            : 'Next Phase'}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
@@ -94,13 +149,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: 30,
+    marginBottom: 25,
   },
   title: {
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '700',
+    marginBottom: 8,
+  },
+  phaseTitle: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
     marginBottom: 12,
+  },
+  memberText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  memberCount: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginBottom: 14,
   },
   description: {
     fontSize: 15,
@@ -114,18 +185,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
-    backgroundColor: '#f3f3f3',
   },
   resultText: {
     textAlign: 'center',
     fontWeight: '600',
-    marginBottom: 6,
-  },
-  averageText: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: '700',
-    marginTop: 8,
   },
   continueButton: {
     backgroundColor: '#000',
