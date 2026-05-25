@@ -1,7 +1,10 @@
+//This file is to test the functions in sound_decorator.js 
+
+
 const {
   classifySound,
   getApproxDb,
-} = require('./sound_utils');
+} = require('../decorators/sound_utils');
 
 describe('Sound Decorator Unit Tests', () => {
   test('classifySound returns Quiet for low meter value', () => {
