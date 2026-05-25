@@ -57,7 +57,7 @@ export default function Activity76() {
 
     if ((global as any).activity7DataIndex < membersLength - 1) {
       (global as any).activity7DataIndex += 1;
-      router.replace('/activity7.5' as any);
+      router.replace('/activity7.6' as any);
       return;
     }
 
