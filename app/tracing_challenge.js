@@ -7,9 +7,14 @@ export default function TracingChallenge({ onResult }) {
   const [targetX, setTargetX] = useState(20);
   const [targetY, setTargetY] = useState(40);
   const [fingerX, setFingerX] = useState(null);
-  const [startTime, setStartTime] = useState(null);
+  const [fingerY, setFingerY] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
   const [delay, setDelay] = useState(null);
+
+  const startTimeRef = useRef(null);
+  const accuracyRef = useRef(null);
+  const targetXRef = useRef(20);
+  const targetYRef = useRef(40);
 
   const totalDistance = 260;
 
@@ -20,33 +25,47 @@ export default function TracingChallenge({ onResult }) {
 
       onPanResponderMove: (event) => {
         const touchX = event.nativeEvent.locationX;
+        const touchY = event.nativeEvent.locationY;
+
         setFingerX(touchX);
+        setFingerY(touchY);
 
-        const distanceFromTarget = Math.abs(touchX - targetX);
-        setAccuracy(distanceFromTarget.toFixed(1));
-      },
+        const xDistance = touchX - targetXRef.current;
+        const yDistance = touchY - targetYRef.current;
 
-      onPanResponderRelease: () => {
-        if (!started || finished) return;
+        const distanceFromTarget = Math.sqrt(
+          xDistance * xDistance + yDistance * yDistance
+        );
 
-        const resultDelay = Date.now() - startTime;
-        const finalAccuracy = accuracy ?? 'N/A';
+        const roundedAccuracy = distanceFromTarget.toFixed(1);
 
-        setDelay(resultDelay);
-        setFinished(true);
-
-        if (onResult) {
-          onResult({
-            accuracy: finalAccuracy,
-            delay: resultDelay,
-            summary: `Accuracy: ${finalAccuracy}px, Delay: ${resultDelay}ms`,
-          });
-        }
+        setAccuracy(roundedAccuracy);
+        accuracyRef.current = roundedAccuracy;
       },
     })
   ).current;
 
-    function startChallenge() {
+    function finishChallenge() {
+    if (finished) return;
+
+    const resultDelay = Date.now() - startTimeRef.current;
+    const finalAccuracy = accuracyRef.current ?? 'Not recorded';
+
+    setDelay(resultDelay);
+    setAccuracy(finalAccuracy);
+    setFinished(true);
+    setStarted(false);
+
+    if (onResult) {
+        onResult({
+        accuracy: finalAccuracy,
+        delay: resultDelay,
+        summary: `Accuracy: ${finalAccuracy}px, Delay: ${resultDelay}ms`,
+        });
+    }
+    }
+
+  function startChallenge() {
     setStarted(true);
     setFinished(false);
 
@@ -54,50 +73,60 @@ export default function TracingChallenge({ onResult }) {
 
     setTargetX(20);
     setTargetY(40);
+    targetXRef.current = 20;
+    targetYRef.current = 40;
 
     setFingerX(null);
+    setFingerY(null);
     setAccuracy(null);
     setDelay(null);
-    setStartTime(Date.now());
+    accuracyRef.current = null;
+
+    const startedAt = Date.now();
+    startTimeRef.current = startedAt;
 
     const interval = setInterval(() => {
-        position += 10;
+      position += 10;
 
-        setTargetX(position);
-        setTargetY(70 + Math.sin(position / 30) * 40);
+      const nextX = position;
+      const nextY = 70 + Math.sin(position / 30) * 40;
 
-        if (position >= totalDistance) {
+      setTargetX(nextX);
+      setTargetY(nextY);
+
+      targetXRef.current = nextX;
+      targetYRef.current = nextY;
+
+      if (position >= totalDistance) {
         clearInterval(interval);
-        }
+        finishChallenge();
+      }
     }, 250);
-    }
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tracing Challenge</Text>
 
-
       <View style={styles.traceArea} {...panResponder.panHandlers}>
-            <View style={[styles.target, { left: targetX, top: targetY }]} />
-        {fingerX !== null && (
-          <View style={[styles.fingerMarker, { left: fingerX }]} />
+        <View style={[styles.target, { left: targetX, top: targetY }]} />
+
+        {fingerX !== null && fingerY !== null && (
+          <View style={[styles.fingerMarker, { left: fingerX, top: fingerY }]} />
         )}
       </View>
-
-
 
       <TouchableOpacity style={styles.button} onPress={startChallenge}>
         <Text style={styles.buttonText}>
           {started && !finished ? 'Restart Challenge' : 'Start Challenge'}
         </Text>
       </TouchableOpacity>
-            <Text style={styles.result}>
-        Accuracy: {accuracy ? `${accuracy}px` : 'Not Started'}
-      </Text>
 
-      <Text style={styles.result}>
-        Delay: {delay ? `${delay}ms` : 'Not Finished'}
-      </Text>
+      {finished && (
+        <Text style={styles.result}>
+          Accuracy: {accuracy ? `${accuracy}px` : 'Not Recorded'} | Delay: {delay ? `${delay}ms` : 'Not Recorded'}
+        </Text>
+      )}
     </View>
   );
 }
@@ -116,10 +145,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  instructions: {
-    textAlign: 'center',
-    marginVertical: 4,
-  },
   traceArea: {
     height: 180,
     borderWidth: 1,
@@ -132,7 +157,6 @@ const styles = StyleSheet.create({
   },
   target: {
     position: 'absolute',
-    top: 30,
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -140,7 +164,6 @@ const styles = StyleSheet.create({
   },
   fingerMarker: {
     position: 'absolute',
-    top: 35,
     width: 20,
     height: 20,
     borderRadius: 10,
@@ -149,13 +172,13 @@ const styles = StyleSheet.create({
   result: {
     textAlign: 'center',
     fontWeight: '600',
-    marginBottom: 6,
+    marginTop: 8,
   },
   button: {
     backgroundColor: '#000',
     paddingVertical: 14,
     borderRadius: 6,
-    marginTop: 10,
+    marginTop: 8,
   },
   buttonText: {
     color: '#fff',
