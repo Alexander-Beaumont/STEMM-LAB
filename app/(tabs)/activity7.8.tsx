@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import '../../components/decorators/global';
 import BreathingMeter from '../../components/decorators/breathing_meter.js';
 
-export default function Activity78() {
+export default function Activity7() {
   const [darkMode] = useState((global as any).darkmodeEnabled);
 
   if (!(global as any).activity7Data) {
@@ -57,7 +57,7 @@ export default function Activity78() {
 
     if ((global as any).activity7DataIndex < membersLength - 1) {
       (global as any).activity7DataIndex += 1;
-      router.replace('/activity7.9' as any);
+      router.replace('/activity7.8' as any);
       return;
     }
 
@@ -101,7 +101,7 @@ export default function Activity78() {
 
       <View style={[styles.resultsBox, { backgroundColor: darkMode ? '#333' : '#f3f3f3' }]}>
         <Text style={[styles.resultText, { color: darkMode ? '#fff' : '#111' }]}>
-          Rest result: {result ?? 'Not Started'}
+          Exercise 2 result: {result ?? 'Not Started'}
         </Text>
       </View>
 
@@ -109,7 +109,7 @@ export default function Activity78() {
         <Text style={styles.buttonText}>
           {(global as any).activity7DataIndex < memberCount - 1
             ? 'Next Team Member'
-            : 'Next Phase'}
+            : 'Continue'}
         </Text>
       </TouchableOpacity>
 

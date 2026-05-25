@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import '../../components/decorators/global';
 import BreathingMeter from '../../components/decorators/breathing_meter.js';
 
-export default function Activity76() {
+export default function Activity7() {
   const [darkMode] = useState((global as any).darkmodeEnabled);
 
   if (!(global as any).activity7Data) {

@@ -33,7 +33,7 @@ export default function Activity77() {
   useFocusEffect(
     useCallback(() => {
       const index = (global as any).activity7DataIndex;
-      setResult((global as any).activity7Data[index]?.excercise1 ?? null);
+      setResult((global as any).activity7Data[index]?.exercise1 ?? null);
     }, [])
   );
 
@@ -48,21 +48,22 @@ export default function Activity77() {
       };
     }
 
-    (global as any).activity7Data[index].excercise1 = data.summary;
+    (global as any).activity7Data[index].exercise1 = data.summary;
     setResult(data.summary);
   }
 
-  function goNext() {
-    const membersLength = (global as any).members?.length ?? 1;
+function goNext() {
+  const membersLength = (global as any).members?.length ?? 1;
 
-    if ((global as any).activity7DataIndex < membersLength - 1) {
-      (global as any).activity7DataIndex += 1;
-        router.push('/activity7.8' as any);      return;
-    }
-
-    (global as any).activity7DataIndex = 0;
-    router.push('/activity7.8' as any);
+  if ((global as any).activity7DataIndex < membersLength - 1) {
+    (global as any).activity7DataIndex += 1;
+    router.replace('/activity7.7' as any);
+    return;
   }
+
+  (global as any).activity7DataIndex = 0;
+  router.push('/activity7.8' as any);
+}
 
   const memberName =
     (global as any).members?.[(global as any).activity7DataIndex]?.name ??
@@ -100,7 +101,7 @@ export default function Activity77() {
 
       <View style={[styles.resultsBox, { backgroundColor: darkMode ? '#333' : '#f3f3f3' }]}>
         <Text style={[styles.resultText, { color: darkMode ? '#fff' : '#111' }]}>
-          Rest result: {result ?? 'Not Started'}
+          Exercise 1 result: {result ?? 'Not Started'}
         </Text>
       </View>
 
