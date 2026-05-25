@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import '../global.js';
-import TracingChallenge from '../tracing_challenge';
+import '../../components/decorators/global';
+import TracingChallenge from '../../components/decorators/tracing_challenge';
 
 export default function Activity67() {
   const [darkMode] = useState((global as any).darkmodeEnabled);

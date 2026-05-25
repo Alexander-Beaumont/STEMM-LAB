@@ -1,6 +1,6 @@
 
-import ImageDecorator from '../image.js';
-import Screen from '../screen.js';
+import ImageDecorator from '../../components/decorators/image.js';
+import Screen from '../../components/decorators/screen';
   
 
 export default function Activity6() {

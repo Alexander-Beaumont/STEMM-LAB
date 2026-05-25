@@ -1,5 +1,5 @@
-import Screen from '../screen.js';
-import Reflection from '../reflection.js';
+import Screen from '../../components/decorators/screen';
+import Reflection from '../../components/decorators/reflection.js';
 import firebase from 'firebase/compat/app';
 import { doc } from "firebase/firestore"; 
 import { updateDoc  } from "firebase/firestore";

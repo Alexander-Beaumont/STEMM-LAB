@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import '../global.js';
-import ReactionTimer from '../reaction_timer';
+import '../../components/decorators/global';
+import ReactionTimer from '../../components/decorators/reaction_timer';
 
 export default function Activity66() {
   const [darkMode] = useState((global as any).darkmodeEnabled);

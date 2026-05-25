@@ -1,5 +1,5 @@
 
-import Screen from '../screen.js';
+import Screen from '../../components/decorators/screen';
   
 
 export default function Activity6() {
