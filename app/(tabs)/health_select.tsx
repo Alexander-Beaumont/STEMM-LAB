@@ -51,8 +51,9 @@ export default function CategoryScreen() {
       {backgroundColor: darkMode ? '#444' : '#ddd'}]}>
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Reaction Board Challenge</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={[styles.optionButton,
-      {backgroundColor: darkMode ? '#444' : '#ddd'}]}>
+      {backgroundColor: darkMode ? '#444' : '#ddd'}]} onPress={() => router.push('/activity7.1')}> 
         <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Breathing Pace Trainer</Text>
       </TouchableOpacity>
 
