@@ -57,6 +57,11 @@ export default function HomeScreen() {
           score += 1;
         }
       }
+      for (let i in doc.data().activity2Data) {
+        if (doc.data().activity2Data[i].volume!=0) {
+          score += 2;
+        }
+      }
       if (doc.data().activity3Data.material1!="") {
         score += 1;
       }
@@ -169,7 +174,11 @@ export default function HomeScreen() {
         {color: darkMode ? '#fff' : '#111', marginBottom:20}
       ]}>Your Points: {myPoints}</Text>}
       {rankings}
-
+      <TouchableOpacity
+          style={[styles.backButton,{backgroundColor: darkMode ? '#fff' : '#000',}]}
+          onPress={() => router.back()}>
+          <Text style={[styles.backButtonText,{color: darkMode ? '#000' : '#fff',}]}>Back</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -188,6 +197,20 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 22,
+  },
+  backButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  backButton: {
+    backgroundColor: '#000',
+    paddingVertical: 14,
+    width: "100%",
+    borderRadius: 6,
+    bottom: 70,
+    alignSelf: 'center',
+    position:"absolute",
   },
   title: {
     textAlign: 'center',

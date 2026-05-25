@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import "../global.js";
+import "../../components/decorators/global.js";
 import firebase from 'firebase/compat/app';
 import { doc, setDoc } from "firebase/firestore"; 
 import { collection, query, where, getDocs  } from "firebase/firestore";
@@ -17,6 +17,13 @@ let activity1Data = {
     1:{time:null,mass:null,height:null,accuracy:null,video:[]},
     2:{time:null,mass:null,height:null,accuracy:null,video:[]},
     3:{time:null,mass:null,height:null,accuracy:null,video:[]}
+}
+let activity2Data = {
+    0:{volume:"0"},
+    1:{volume:"0"},
+    2:{volume:"0"},
+    3:{volume:"0"},
+    4:{volume:"0"}
 }
 let activity3Data = {
     material1:'',
@@ -64,6 +71,9 @@ export default function HomeScreen() {
 
   const db = firebase.firestore();
   const [canContinue, setCanContinue] = useState(false);
+  const [hasRun, setHasRun] = useState(0);
+  const [hasRun2, setHasRun2] = useState(0);
+  const [hasRun3, setHasRun3] = useState(0);
   
   const [feedback, setFeedback] = useState("");
   const [grade, setGrade] = useState("");
@@ -83,6 +93,7 @@ export default function HomeScreen() {
       global.members = doc.data().members;
       global.activity4Complete = doc.data().activity4Complete
       global.activity1Data = doc.data().activity1Data
+      global.activity2Data = doc.data().activity2Data
       global.activity3Data = doc.data().activity3Data
       global.activity4Data = doc.data().activity4Data
       global.activity1Reflection = doc.data().activity1Reflection
@@ -94,7 +105,11 @@ export default function HomeScreen() {
       global.activity7Reflection = doc.data().activity7Reflection
       global.activity5Results = doc.data().activity5Results
     });
-    if (password == savedPassword || savedPassword == "") {
+    if (name==""||grade==""||team==""||password=="") {
+      setFeedback("All fields must be filled.");
+      setCanContinue(false)
+    }
+    else if (password == savedPassword || savedPassword == "") {
       db.collection('Teams').doc(team.trim()).update({
           members: firebase.firestore.FieldValue.arrayUnion({name:name.trim(), grade : grade.trim(), activity6Data: { attempt1: null, attempt2: null, attempt3: null } })
       }).catch(error => {
@@ -105,6 +120,7 @@ export default function HomeScreen() {
           activity1Complete: activity1Complete,
           activity4Complete: activity4Complete,
           activity1Data: activity1Data,
+          activity2Data: activity2Data,
           activity3Data: activity3Data,
           activity4Data: activity4Data,
           activity1Reflection: '',
@@ -124,6 +140,7 @@ export default function HomeScreen() {
     }
     else {
       setFeedback("Wrong Password");
+      setCanContinue(false)
     }
     querySnapshot.forEach((doc) => {
       savedPassword = doc.data().password
@@ -143,8 +160,104 @@ export default function HomeScreen() {
       global.activity7Reflection = doc.data().activity7Reflection
       global.activity5Results = doc.data().activity5Results
     });
+    checkDataUpload()
   };
-    
+  async function checkDataUpload() {
+    const ref = collection(db, "Teams");
+    // Create a query against the collection.
+    const q = query(ref, where("team", "==", team.trim()));
+    const querySnapshot = await getDocs(q)
+    let savedPassword = "";
+    querySnapshot.forEach((doc) => {
+      savedPassword = doc.data().password
+    });
+    if (savedPassword==""){
+      console.log("checkDataUpload: Fail")
+    }
+    else {
+      console.log("checkDataUpload: Pass")
+    }
+  }
+  async function testSubmitWorks() {
+    if (hasRun==0) {
+      setName("Placeholder Child")
+      setGrade("4")
+      setTeam("Team Boring")
+      setPassword("yes")
+      setHasRun(1)
+    }
+    else if (hasRun==1) {
+      await addItem()
+      setHasRun(2)
+    }
+    else if (hasRun==2) {
+      if (canContinue) {
+        console.log("testSubmitWorks: Pass")
+      }
+      else {
+        console.log("testSubmitWorks: Fail")
+      }
+      setHasRun(3)
+    }
+  }
+  async function checkPasswordCatching() {
+    if (hasRun2==0) {
+      setName("Placeholder Child")
+      setGrade("4")
+      setTeam("Team Boring")
+      setPassword("no")
+      setHasRun2(1)
+    }
+    else if (hasRun2==1) {
+      await addItem()
+      setHasRun2(2)
+    }
+    else if (hasRun2==2) {
+      if (!canContinue) {
+        console.log("checkPasswordCatching: Pass")
+      }
+      else {
+        console.log("checkPasswordCatching: Fail")
+      }
+      setHasRun2(3)
+      setHasRun(4)
+    }
+  }
+  async function checkMissingFieldCatching() {
+    if (hasRun3==0) {
+      setName("Placeholder Child")
+      setGrade("")
+      setTeam("Team Boring")
+      setPassword("no")
+      setHasRun3(1)
+    }
+    else if (hasRun3==1) {
+      await addItem()
+      setHasRun3(2)
+    }
+    else if (hasRun3==2) {
+      if (!canContinue) {
+        console.log("checkMissingFieldCatching: Pass")
+      }
+      else {
+        console.log("checkMissingFieldCatching: Fail")
+      }
+      setHasRun3(3)
+      setHasRun2(4)
+    }
+  }
+  function runTests() {
+    if (hasRun<3) {
+      testSubmitWorks()
+    }
+    if (hasRun==3) {
+      checkPasswordCatching()
+    }
+    if (hasRun2==3) {
+      checkMissingFieldCatching()
+    }
+  }
+  //runTests()
   const [darkMode, setDarkMode] = useState(false);
   if (darkMode!=global.darkmodeEnabled) {
     setDarkMode(global.darkmodeEnabled);
@@ -185,35 +298,35 @@ export default function HomeScreen() {
       ]}>STEMM LAB APP</Text>
       {feedbackCode}
       <View style={styles.form}>
-        <TextInput style={[styles.input,
+        <TextInput testID="name" accessibilityLabel="name" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777',}
         ]} value={name} onChangeText={(e) => setName(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
           placeholder="Name:" />
-        <TextInput style={[styles.input,
+        <TextInput testID="grade" accessibilityLabel="grade" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]}  value={grade} onChangeText={(e) => setGrade(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Grade" />
-        <TextInput style={[styles.input,
+          placeholder="Grade:" />
+        <TextInput testID="team" accessibilityLabel="team" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={team} onChangeText={(e) => setTeam(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Team name" />
-          <TextInput style={[styles.input,
+          placeholder="Team Name:" />
+          <TextInput testID="password" accessibilityLabel="password" style={[styles.input,
           {backgroundColor: darkMode ? '#111' : '#fff',
           color: darkMode ? '#fff' : '#777'}
         ]} value={password} onChangeText={(e) => setPassword(e)}
           placeholderTextColor={darkMode ? '#fff' : '#777'}
-          placeholder="Password" />
+          placeholder="Password:" />
       </View>
 
       <TouchableOpacity style={[styles.smallButton,
-      {backgroundColor: darkMode ? '#111' : '#fff'}]} onPress={addItem}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#fff' : '#111'}]}>Add Team member</Text>
+      {backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={addItem}>
+        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Add Team member</Text>
       </TouchableOpacity>
 
       {continueCode}

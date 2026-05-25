@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Decorator from './decorator.js';
+import firebase from 'firebase/compat/app';
+import { doc, updateDoc } from "firebase/firestore"; 
+
 
 import {
   AudioModule,
@@ -80,6 +83,38 @@ export function SoundMeter({ onSoundChange }) {
 
   async function stopMeasuring() {
     try {
+      global.activity2Data[global.activity2DataIndex].volume = global.highest;
+      const dtb = firebase.firestore();
+      const ref = doc(dtb, 'Teams', global.team.trim());
+      switch(global.activity2DataIndex) {
+        case 0:
+          updateDoc(ref, { 
+            "activity2Data.0.volume": global.highest,
+          });
+          break;
+        case 1:
+          updateDoc(ref, { 
+            "activity2Data.1.volume": global.highest,
+          });
+          break;
+        case 2:
+          updateDoc(ref, { 
+            "activity2Data.2.volume": global.highest,
+          });
+          break;
+        case 3:
+          updateDoc(ref, { 
+            "activity2Data.3.volume": global.highest,
+          });
+          break;
+        case 4:
+          updateDoc(ref, { 
+            "activity2Data.4.volume": global.highest,
+          });
+          break;
+
+      }
+      global.highest = 0;
       if (!measuring) return;
 
       await recorder.stop();
@@ -91,6 +126,7 @@ export function SoundMeter({ onSoundChange }) {
   }
 
   React.useEffect(() => {
+    
     if (onSoundChange) {
       onSoundChange({
         rawMeterValue: meterValue,
@@ -98,6 +134,9 @@ export function SoundMeter({ onSoundChange }) {
         soundLevel,
         isMeasuring: measuring,
       });
+      if (approxDb>highest) {
+        global.highest = approxDb
+      }
     }
   }, [meterValue, approxDb, soundLevel, measuring]);
   
@@ -109,20 +148,17 @@ export function SoundMeter({ onSoundChange }) {
       <Text style={[styles.level,{color: darkMode ? '#fff' : '#111'}]}>{soundLevel}</Text>
 
       <Text style={[styles.meter,{color: darkMode ? '#fff' : '#111'}]}>
-        Approx dB: {approxDb ?? 'N/A'}
+        Approximate dB: {approxDb ?? '0'}
       </Text>
-
-      <Text style={[styles.meter,{color: darkMode ? '#fff' : '#111'}]}>
-        Raw meter value: {typeof meterValue === 'number' ? meterValue.toFixed(2) : 'N/A'}
-      </Text>
-
-      <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={startMeasuring}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Start Measuring</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={stopMeasuring}>
-        <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Stop Measuring</Text>
-      </TouchableOpacity>
+      {measuring ? (
+        <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={stopMeasuring}>
+          <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Stop Measuring</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={[styles.button,{backgroundColor: darkMode ? '#fff' : '#111'}]} onPress={startMeasuring}>
+          <Text style={[styles.buttonText,{color: darkMode ? '#111' : '#fff'}]}>Start Measuring</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

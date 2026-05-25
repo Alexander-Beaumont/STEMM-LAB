@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Checkbox } from 'expo-checkbox';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import "../global.js";
+import "../../components/decorators/global.js";
 import firebase from 'firebase/compat/app';
 import { doc, setDoc } from "firebase/firestore"; 
 import { collection, query, where, getDocs, updateDoc  } from "firebase/firestore";

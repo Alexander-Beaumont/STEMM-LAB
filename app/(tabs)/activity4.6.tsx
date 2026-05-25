@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import "../global.js";
-import { GyroscopeMeter } from '../gyroscope.js';
+import "../../components/decorators/global.js";
+import { GyroscopeMeter } from '../../components/decorators/gyroscope.js';
 
 import firebase from 'firebase/compat/app';
 import { doc, setDoc } from "firebase/firestore"; 

@@ -1,4 +1,3 @@
-import { useVideoPlayer, VideoView } from 'expo-video';
 import { useState } from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import Decorator from './decorator';

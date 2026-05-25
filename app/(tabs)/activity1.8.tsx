@@ -1,6 +1,6 @@
 
-import Screen from '../screen.js';
-import PlayerDecorator from '../player.js';
+import Screen from '../../components/decorators/screen.js';
+import PlayerDecorator from '../../components/decorators/player.js';
   
 
 export default function Activity1() {

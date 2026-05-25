@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { MovementMeter } from '../movement_meter';
-import '../global.js'
+import { MovementMeter } from '../../components/decorators/movement_meter';
+import '../../components/decorators/global.js'
 function getActivity5Results() {
   return (global as any).activity5Results;
 }
